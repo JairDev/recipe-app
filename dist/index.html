@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="preload" href="js/index.bundle.js" as="script">
+  <title>Recipes</title>
+<link href="css/style.css" rel="stylesheet"></head>
+<body>
+  <svg style="position: absolute;">
+    <symbol id="icon-search" viewBox="0 0 32 32">
+      <title>search</title>
+      <path d="M31.008 27.231l-7.58-6.447c-0.784-0.705-1.622-1.029-2.299-0.998 1.789-2.096 2.87-4.815 2.87-7.787 0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12c2.972 0 5.691-1.081 7.787-2.87-0.031 0.677 0.293 1.515 0.998 2.299l6.447 7.58c1.104 1.226 2.907 1.33 4.007 0.23s0.997-2.903-0.23-4.007zM12 20c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"></path>
+    </symbol>
+
+    <symbol id="icon-home" viewBox="0 0 32 32">
+      <title>home</title>
+      <path d="M32 18.451l-16-12.42-16 12.42v-5.064l16-12.42 16 12.42zM28 18v12h-8v-8h-8v8h-8v-12l12-9z"></path>
+    </symbol>
+    <symbol id="icon-ctrl" viewBox="0 0 32 32">
+      <title>ctrl</title>
+      <path d="M23 14c-0.278 0-0.555-0.116-0.753-0.341l-6.247-7.14-6.247 7.14c-0.364 0.416-0.995 0.458-1.411 0.094s-0.458-0.995-0.094-1.411l7-8c0.19-0.217 0.464-0.341 0.753-0.341s0.563 0.125 0.753 0.341l7 8c0.364 0.416 0.322 1.047-0.094 1.411-0.19 0.166-0.424 0.247-0.658 0.247z"></path>
+   </symbol>
+  </svg>
+
+  <header class="header">
+    <nav class="menu">
+      <!-- <div class="menu__logo">
+        <h1>Logo</h1>
+        <img src="" alt="">
+      </div> -->
+      <!-- <button class="home">Home</button> -->
+      <div class="menu__links">
+        <ul>
+          <li><a href="#"><svg class="icon icon-home home"><use xlink:href="#icon-home"></use></svg></a></li>
+          <li><a class="my__recipes" href="#">My recipes</a></li>
+          <li><a class="add__recipe" href="#">Add recipe</a></li>
+        </ul>
+      </div>
+      <div class="menu__search">
+        <svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg>
+        <div class="menu__search__content">
+          <h2 class="icon_close">X</h2>
+          <div class="menu__search__form">
+            <form action="">
+              <h2>Search meal</h2>
+              <input class="menu__search__input" type="text">
+            </form>
+          </div>
+          <div class="menu__search__result">
+
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header> 
+  
+  <section class="free-image">
+    <img src="./img/mediterranean-cuisine-2378758_1280.jpg" alt="">
+  </section>
+  <section class="modal-recipe">
+    <form class="modal-recipe__form" action="">
+      <div class="modal-recipe__name__recipe">
+        <p>Name</p> 
+        <input class="modal-recipe__input__name" type="text" placeholder="recipe name">
+      </div> 
+      <div class="modal-recipe__ingredients"> 
+        <p>Ingredients</p>
+        <textarea class="modal-recipe__text__ingredients" name="" id="" cols="20" rows="5"></textarea>
+      </div> 
+      <div class="modal-recipe__instructions"> 
+        <p>Instructions</p>
+        <textarea class="modal-recipe__text__intructions" name="" id="" cols="20" rows="5"></textarea>
+      </div> 
+      <div class="modal-recipe__content-input">
+        <input class="modal-recipe__input-preview" type="file">
+      </div>
+      <div class="modal-recipe__content-img">
+        <img class="modal-recipe__preview-img" src="" alt="">
+      </div>
+      <span class="modal-recipe__close">X</span>
+    
+    <div class="modal-recipe__button-done">
+      <button type="submit">Done</button>
+    </div>
+    </form>
+  </section>
+  <main class="main">
+    <section class="section-trend">
+      <!-- <div class="section-trend__content">
+        <img src="" alt="">
+        <p class="section-trend__text"></p>
+      </div> -->
+      
+    </section>
+    
+    
+    <section class="section-categories">
+    
+      <!-- <h1 class="title-categories">Recipes</h1> -->
+      
+      <div class="section-categories__content">
+        <!-- <span class="warning">Meal already exist...</span> -->
+      </div>
+    </section>
+
+    <div class="top">
+      <svg class="icon icon-top"><use xlink:href="#icon-ctrl"></use></svg>
+    </div>
+
+  </main>
+  
+  
+  
+<script type="text/javascript" src="js/index.bundle.js"></script></body>
+</html>
