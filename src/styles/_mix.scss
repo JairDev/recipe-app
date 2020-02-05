@@ -1,0 +1,48 @@
+@mixin style($map) {
+  border-bottom: 1px solid map-get($map, "base");
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  margin: .8rem;
+  width: 30%;
+  & img {
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  & h2 {
+    font-size: 1.3rem;
+    margin-top: 1rem;
+    margin-bottom: .5rem;
+    letter-spacing: 1px;
+  }
+}
+
+@mixin load {
+  & .lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+  }
+  .lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+  @keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

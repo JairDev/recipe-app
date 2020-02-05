@@ -1,0 +1,609 @@
+@import "mix";
+
+$colors: (
+  "back-body": #282828,
+  "base": rgb(204, 204, 204),
+  "hovers": rgb(233, 233, 233),
+  "warn": rgb(230, 84, 84),
+  "success": rgb(16, 151, 122),
+);
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  text-decoration: none;
+  a {
+    text-decoration: none;
+    color: white;
+  }
+}
+
+body {
+  background-color: map-get($colors, "back-body");
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+}
+
+
+.menu {
+  background-color: map-get($colors, "back-body");
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  position: relative;
+  padding: 1rem;
+  z-index: 1000;
+  & .menu__links {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    & ul {
+      display: flex;
+      flex: 1;
+      justify-content: space-around;
+      align-items: center;
+      & li {
+        list-style: none;
+        & a {
+          color: map-get($colors, "base");
+          text-decoration: none;
+          font-size: 1.5rem;
+        }
+        & a:hover {
+          color: map-get($colors, "hovers" );
+        }
+      }
+    }
+    .icon-home {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke-width: 0;
+      stroke: currentColor;
+      fill: currentColor;
+    }
+  }
+  & .menu__search {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & .icon {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke-width: 0;
+      stroke: white;
+      fill: white;
+    }
+    & .menu__search__content {
+      background-color: rgb(65, 65, 65);
+      color: map-get($colors, "base" );
+      display: none;
+      width: 100%;
+      padding: 3rem 1rem;
+      position: absolute;
+      top: 57px;
+      left: 0;
+      z-index: 200;
+      & .icon_close {
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      & .menu__search__form {
+        & form input {
+          border: none;
+          background-color: rgb(49, 49, 49) ;
+          color: white;
+          width: 100%;
+          height: 5vh;
+          font-size: 2rem;
+        }
+      }
+
+      & .menu__search__result{
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+        
+        & .error_match {
+          color: map-get($colors, "warn");
+          align-self: center;
+          font-size: 1.5rem;
+          margin-top: 1rem;
+          padding: .5rem .8rem;
+          border-radius: 25px;
+        }
+        & .thumb_meal {
+          background-color: #414141;
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          width: 50%;
+          margin-top: 1rem;
+          padding: 0 1.5rem;
+          & p {
+            font-size: 1.2rem;
+          }
+        }
+        & img {
+          max-width: 30%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}
+
+.free-image {
+  width: 100%;
+  height: 200px;
+  & img {
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+}
+.modal-recipe {
+  background-color: rgb(43, 43, 43);
+  color: white;
+  display: none;
+  flex-direction: column;
+  width: 70%;
+  padding: 0 1rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 100;
+  & .modal-recipe__form {
+    display: flex;
+    flex-direction: column;
+  }
+  & .modal-recipe__name__recipe {
+    margin-top:  1.5rem;
+
+    & .modal-recipe__input__name {
+      padding: 1rem;
+      border: none;
+      background-color: rgb(43, 43, 43);
+      border-bottom: 1px solid white;
+      width: 100%;
+      height: 30px;
+      color: white;
+      font-size: 1.3rem;
+    }
+  }
+
+  & .modal-recipe__ingredients {
+    margin-top: .5rem;
+  }
+  & textarea {
+    background-color: rgb(43, 43, 43);
+    color: white;
+    width: 100%;
+    margin-top: .5rem;
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+  }
+  & .modal-recipe__button-done {
+    align-self: flex-end;
+    margin: 0 10px 10px 0;
+    width: 15%;
+    & button {
+      background-color: rgb(50, 112, 50);
+      border: none;
+      color: white;
+      width: 100%;
+      padding: .4rem;
+      font-size: 1.2rem;
+    }
+  }
+}
+.modal-recipe__preview-img {
+  max-width: 300px;
+}
+.modal-recipe__close {
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 150;
+  
+}
+.modal-recipe.active {
+  display: block;
+}
+main {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10rem;
+  & .section-trend {
+    width: 100%;
+    height: 60vh;
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    @include load;
+  
+    & .section-trend__content {
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      & img {
+        max-height: 100%;
+        width: 100%;
+        object-fit: cover;
+        transition: all linear .3s;
+      }
+      & .section-trend__content-text {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        font-size: 1.5rem;
+        padding: .5rem 1rem;
+        width: 100%;
+        height: 110px;
+        position: absolute;
+        bottom: 0;
+        z-index: 50;
+        & h2 {
+          margin-bottom: 1rem;
+        }
+        & a:hover {
+          border-bottom: 1px solid white;
+        }
+      }
+    }
+    & .section-trend__content:hover img {
+      transform: scale(1.1);
+    }
+  }
+  & .section-categories {
+    width: 100%;
+    color: white;
+    position: relative;
+    font-size: 1.5rem;
+    text-align:  center;
+    margin-top: 4rem;
+    margin-bottom: 5rem;
+    @include load;
+    & h1 {
+      border-bottom: 1px solid map-get($colors, "base");;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+    }
+    & #button_back {
+      border: none;
+      background-color: transparent;
+      border: 1px solid map-get($colors, "base");
+      color: white;
+      cursor: pointer;
+      width: 90px;
+      padding: 10px;
+      position: absolute;
+      left: 15px;
+      font-size: 1.1rem;
+    }
+    & .section-categories__content {
+      font-size: 1.1rem;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0 2rem;
+      & .nothing {
+        color: rgba(255, 255, 255, .4);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+      }
+      & .button_delete {
+        background-color: transparent;
+        border: none;
+        background-color: map-get($colors, "warn");
+        color: white;
+        cursor: pointer;
+        width: 90px;
+        font-size: 1.1rem;
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      & .display_success_removed:before {
+        content: 'Meal removed...';
+        background-color: map-get($colors, "success");
+        border-radius: 5px;
+        letter-spacing: .5px;
+        position: absolute;
+        top: -70px;
+        left: -60px;
+        width: 220px;
+        padding: 1rem 0;
+      }
+      & .display_success_removed:after {
+        content: '▼';
+        color: map-get($colors, "success");;
+        position: absolute;
+        top: -30px;
+        left: -65px;
+        width: 220px;
+        font-size: 1.5rem;
+      }
+      & .section-categories__content__categories {
+        @include style($colors);
+      }
+
+      & .section-categories__content__meals{
+        @include style($colors);
+      }
+
+      & .section-categories__content__eachmeal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin: .8rem;
+        width:  100%;
+        transition: all 1s linear;
+        margin-top: 5rem;
+        & .img_eachmeal {
+          margin-top: 1rem;
+        }
+        & .name_eachmeal {
+          border-top: 1px solid map-get($colors, "base");
+          border-bottom: 1px solid map-get($colors, "base");
+          width: 100%;
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 2rem;
+          & #savebut {
+            border: none;
+            border: 1px solid map-get($colors, "base");
+            color: white;
+            cursor: pointer;
+            width: 120px;
+            font-size: 1.1rem;
+            padding: 10px;
+            position: relative;
+            & .span-save {
+              position: relative;
+              z-index: 10;
+            }
+          }
+
+          & #savebut:hover {
+            border: 1px solid map-get($colors, "success");
+          }
+          
+          & .display_warn:before {
+            content: 'Meal already exist...';
+            background-color: map-get($colors, "warn");
+            border-radius: 5px;
+            letter-spacing: .5px;
+            position: absolute;
+            top: -70px;
+            left: -50px;
+            width: 220px;
+            padding: 1rem 0;
+          }
+          & .display_warn:after {
+            content: '▼';
+            color: map-get($colors, "warn");
+            position: absolute;
+            top: -30px;
+            left: -50px;
+            width: 220px;
+            font-size: 1.5rem;
+          }
+          & .display_success:before {
+            content: 'Meal added...';
+            background-color: map-get($colors, "success");;
+            border-radius: 5px;
+            letter-spacing: .5px;
+            position: absolute;
+            top: -70px;
+            left: -50px;
+            width: 220px;
+            padding: 1rem 0;
+          }
+          & .display_success:after {
+            content: '▼';
+            color: map-get($colors, "success");;
+            position: absolute;
+            top: -30px;
+            left: -50px;
+            width: 220px;
+            font-size: 1.5rem;
+          }
+        }
+        & .ingredients_eachmeal {
+          width: 85%;
+          display: flex;
+          flex-direction: column;
+          margin-top: 1rem;
+          & h2 {
+            align-self: flex-start;
+            font-size: 1.4rem;
+          }
+        }
+        & .instructions_eachmeal {
+          width: 85%;
+          margin-top: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          & h2 {
+            align-self: flex-start;
+            font-size: 1.4rem;
+          }
+          & p {
+            padding-top: 2rem;
+            text-align: start;
+            letter-spacing: .1rem;
+            line-height: 1.3;
+          }
+        }
+        & img {
+          max-width: 70%;
+          object-fit: cover;
+        }
+      }
+
+      & .section-categories__content__myrecipes {
+        @include style($colors);
+      }
+      .list_ingredients {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        margin-right: 3rem;
+        text-align: left;
+        justify-content: space-around;
+        padding-top: 2rem;
+        li {
+          margin-left: 2rem;
+          line-height: 1.4;
+          letter-spacing: .1rem
+        }
+      }
+      .list_measure {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 50%;
+        line-height: 1.4;
+        letter-spacing: .1rem
+      }
+    }
+  }
+  .top {
+    opacity: 0;
+    transition: all linear .2s;
+    .icon-top {
+      cursor: pointer;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      stroke-width: 0;
+      stroke: map-get($colors, "base");
+      fill: map-get($colors, "base");
+      z-index: 1000;
+    }
+  }
+}
+.light {
+  background-color: rgba(#e6cb33, .8); 
+}
+
+.bar {
+  background-color: red;
+  width: 0px;
+  height: 4px;
+  position: fixed;
+  top: 0px;
+  z-index: 500;
+}
+.more {
+  border: 1px solid map-get($colors, "base");
+  cursor: pointer;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  font-size: 1.5rem;
+  padding: 0 1.3rem;
+  position: relative;
+  transition: all linear .3s;
+  & .span-text {
+    display: block;
+    position: relative;
+    z-index: 100;
+  }
+  & .svg-span {
+    margin-bottom: 1rem;
+    margin-left: .5rem;
+    transform: rotate(180deg);
+    position: relative;
+    z-index: 100;
+    & svg {
+      width: 35px;
+      height: 35px;
+    }
+  }
+}
+.more::before {
+  content: '';
+  background-color: #1d1d1d;
+  width: 100%;
+  height: 0%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all linear .2s;
+  z-index: 1;
+}
+.more:hover .span-text {
+  text-shadow: 0px 0px 1px map-get($colors, "base");
+}
+.more:hover::before {
+  opacity: 1;
+  height: 100%;
+}
+
+.footer {
+  background-color: map-get($colors, "base");
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+  font-size: 1.5rem;
+  margin-top: 3rem;
+  position: absolute;
+  bottom: 0;
+  & .content-contact {
+    text-align: center;
+    & span {
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      & .under {
+        border-bottom: 1px solid black;
+        color: black;
+      }
+    }
+  }
+  & .content-icon__github {
+    position: absolute;
+    right: 100px;
+    & .icon-github {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      stroke-width: 0;
+      stroke: black;
+      fill: black;
+    }
+  }
+}
+
