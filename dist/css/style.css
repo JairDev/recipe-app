@@ -10,14 +10,18 @@
     color: white; }
 
 body {
-  background-color: #303030; }
+  background-color: #282828;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh; }
 
 .menu {
-  background-color: #303030;
+  background-color: #282828;
   display: flex;
   justify-content: space-around;
   width: 100%;
-  position: fixed;
+  position: relative;
   padding: 1rem;
   z-index: 1000; }
   .menu .menu__links {
@@ -67,6 +71,7 @@ body {
       left: 0;
       z-index: 200; }
       .menu .menu__search .menu__search__content .icon_close {
+        cursor: pointer;
         position: absolute;
         top: 10px;
         right: 10px; }
@@ -146,7 +151,8 @@ body {
     color: white;
     width: 100%;
     margin-top: .5rem;
-    font-size: 1.2rem; }
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem; }
   .modal-recipe .modal-recipe__button-done {
     align-self: flex-end;
     margin: 0 10px 10px 0;
@@ -163,22 +169,23 @@ body {
   max-width: 300px; }
 
 .modal-recipe__close {
+  cursor: pointer;
   width: 10px;
   height: 10px;
-  cursor: pointer;
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 150; }
 
 .modal-recipe.active {
-  display: flex; }
+  display: block; }
 
 main {
   width: 80%;
   margin: 0 auto;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  margin-bottom: 10rem; }
   main .section-trend {
     width: 100%;
     height: 60vh;
@@ -267,7 +274,8 @@ main {
     main .section-categories h1 {
       border-bottom: 1px solid #cccccc;
       padding-bottom: 1rem;
-      margin-bottom: 2rem; }
+      margin-bottom: 2rem;
+      letter-spacing: 2px; }
     main .section-categories #button_back {
       border: none;
       background-color: transparent;
@@ -381,6 +389,9 @@ main {
             font-size: 1.1rem;
             padding: 10px;
             position: relative; }
+            main .section-categories .section-categories__content .section-categories__content__eachmeal .name_eachmeal #savebut .span-save {
+              position: relative;
+              z-index: 10; }
           main .section-categories .section-categories__content .section-categories__content__eachmeal .name_eachmeal #savebut:hover {
             border: 1px solid #10977a; }
           main .section-categories .section-categories__content .section-categories__content__eachmeal .name_eachmeal .display_warn:before {
@@ -478,22 +489,102 @@ main {
         width: 50%;
         line-height: 1.4;
         letter-spacing: .1rem; }
+  main .top {
+    opacity: 0;
+    transition: all linear .2s; }
+    main .top .icon-top {
+      cursor: pointer;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      stroke-width: 0;
+      stroke: #cccccc;
+      fill: #cccccc;
+      z-index: 1000; }
 
 .light {
   background-color: rgba(230, 203, 51, 0.8); }
 
-.top {
-  opacity: 0;
-  transition: all linear .3s; }
+.bar {
+  background-color: red;
+  width: 0px;
+  height: 4px;
+  position: fixed;
+  top: 0px;
+  z-index: 500; }
 
-.icon-top {
-  border: 5px solid red;
+.more {
+  border: 1px solid #cccccc;
   cursor: pointer;
-  display: inline-block;
-  width: 3rem;
-  height: 3rem;
-  stroke-width: 0;
-  stroke: #cccccc;
-  fill: #cccccc;
-  z-index: 1000; }
+  color: white;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  font-size: 1.5rem;
+  padding: 0 1.3rem;
+  position: relative;
+  transition: all linear .3s; }
+  .more .span-text {
+    display: block;
+    position: relative;
+    z-index: 100; }
+  .more .svg-span {
+    margin-bottom: 1rem;
+    margin-left: .5rem;
+    transform: rotate(180deg);
+    position: relative;
+    z-index: 100; }
+    .more .svg-span svg {
+      width: 35px;
+      height: 35px; }
+
+.more::before {
+  content: '';
+  background-color: #1d1d1d;
+  width: 100%;
+  height: 0%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all linear .2s;
+  z-index: 1; }
+
+.more:hover .span-text {
+  text-shadow: 0px 0px 1px #cccccc; }
+
+.more:hover::before {
+  opacity: 1;
+  height: 100%; }
+
+.footer {
+  background-color: #cccccc;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+  font-size: 1.5rem;
+  margin-top: 3rem;
+  position: absolute;
+  bottom: 0; }
+  .footer .content-contact {
+    text-align: center; }
+    .footer .content-contact span {
+      font-size: 1.2rem;
+      letter-spacing: 1px; }
+      .footer .content-contact span .under {
+        border-bottom: 1px solid black;
+        color: black; }
+  .footer .content-icon__github {
+    position: absolute;
+    right: 100px; }
+    .footer .content-icon__github .icon-github {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      stroke-width: 0;
+      stroke: black;
+      fill: black; }
 
