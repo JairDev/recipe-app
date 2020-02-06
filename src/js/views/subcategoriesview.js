@@ -1,16 +1,5 @@
 import { elements } from './baseview'
 
-// export function displaySubcategorie(imgUrl, meal) {
-//   const html = `
-//     <div class="section-categories__content__meals" data-meal="${meal.strMeal}">
-//       <a class="linkaa">
-//       <img src="${imgUrl}">
-//       </a>
-//       <h2>${meal.strMeal}</h2>
-//     </div>
-//     `;
-//   elements.categories.insertAdjacentHTML("afterbegin", html);
-// }
 export function displayMeals(imgUrl, meal) {
   const html = `
   <div class="section-categories__content__meals" data-meal="${meal.strMeal}">

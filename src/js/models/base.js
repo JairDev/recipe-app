@@ -32,14 +32,16 @@ export async function blob(meal, displayfunc) {
   }
 }
 
-export function blobImgCategory(category) {
-  const url = category.strCategoryThumb;
-  fetch(url)
-    .then(response => response.blob())
-    .then(blob => {
-      const imgUrl = URL.createObjectURL(blob);
-      displayMeals(imgUrl, category);
-    });
+export async function blobImgCategory(category) {
+  try {
+    const url = category.strCategoryThumb;
+    const response = await fetch(url);
+    const data = await response.blob();
+    const objUrl = URL.createObjectURL(data);
+    displayMeals(objUrl, category);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function saveLocal(item) {
