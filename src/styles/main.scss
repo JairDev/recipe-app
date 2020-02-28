@@ -330,7 +330,6 @@ main {
       & .display_success_removed:before {
         content: 'Meal removed...';
         background-color: map-get($colors, "success");
-        border-radius: 5px;
         letter-spacing: .5px;
         position: absolute;
         top: -70px;
@@ -398,7 +397,6 @@ main {
           & .display_warn:before {
             content: 'Meal already exist...';
             background-color: map-get($colors, "warn");
-            border-radius: 5px;
             letter-spacing: .5px;
             position: absolute;
             top: -70px;
@@ -418,7 +416,6 @@ main {
           & .display_success:before {
             content: 'Meal added...';
             background-color: map-get($colors, "success");;
-            border-radius: 5px;
             letter-spacing: .5px;
             position: absolute;
             top: -70px;
@@ -526,6 +523,7 @@ main {
   border: 1px solid map-get($colors, "base");
   cursor: pointer;
   color: white;
+  display: flex;
   align-items: center;
   justify-content: center;
   align-self: center;

@@ -4,7 +4,6 @@ import "./styles/main.scss";
 import "./img/mediterranean-cuisine-2378758_1280.jpg";
 import {
   clearSearch,
-  state,
   clear,
   createButtonBack,
   saveMeal,
@@ -23,12 +22,16 @@ import { categories } from "./js/models/categorymodel";
 import {
   urlSubCategory,
   showMore,
+  objCurrent,
+  loadList
 } from "./js/models/subcategories";
 import { getEachMeal } from "./js/models/eachmeal";
 import { displayMyRecipes } from "./js/views/myrecipeview";
 import { addMyRecipe } from "./js/models/addmyrecipe";
+import { displayMeals } from "./js/views/subcategoriesview";
 
 let subcategorieLog = "";
+let state = {};
 
 function addMyRecipeController(name, instructions, ingredient) {
   addMyRecipe(name, instructions, ingredient);
@@ -39,6 +42,7 @@ function searchMealController() {
 }
 
 async function myRecipesController() {
+  loadList.elementsList = [];
   const trendingMeal = document.querySelector(".section-trend");
   const titleCategorie = document.querySelector(".title-categories");
   const titleSubCategorie = document.querySelector(".title-subcategorie");
@@ -48,17 +52,17 @@ async function myRecipesController() {
   if (buttonBack) buttonBack.remove();
   if (titleSubCategorie) titleSubCategorie.remove();
   clear();
-  delete state.category;
-  delete state.sub;
-  delete state.each;
-  state.myrecipe = await arrSaveMeal.map(meal => {
+  state = {};
+  objCurrent.currentPage = 1;
+  loadList(arrSaveMeal);
+  displayDivMore(arrSaveMeal);
+  state.myrecipe = await loadList.elementsList.map(meal => {
     blob(meal, displayMyRecipes);
   });
   if (arrSaveMeal.length === 0) {
     const h2 = `<h2 class ="nothing">Nothing yet ...</h2>`;
     elements.categories.innerHTML = h2;
   }
-  displayDivMore(arrSaveMeal);
 }
 
 function categoryController() {
@@ -77,6 +81,7 @@ function categoryController() {
     buttonBack.remove();
   }
   clear();
+  state = {};
   state.category = categories();
 }
 
@@ -94,8 +99,7 @@ const subCategoryController = function(url) {
     createButtonBack();
   }
   clear();
-  delete state.category;
-  delete state.each;
+  state = {};
   state.sub = urlSubCategory(url);
   elements.categories.insertAdjacentHTML("beforebegin", h1);
 };
@@ -110,7 +114,7 @@ function eachMealController(url) {
   if (titleCategorie) titleCategorie.remove();
   if (titleSubcategorie) titleSubcategorie.remove();
   clear();
-  delete state.sub;
+  state = {};
   state.each = getEachMeal(url);
 }
 
@@ -119,10 +123,10 @@ function eachMealController(url) {
 elements.search.addEventListener("change", searchMealController);
 elements.search.addEventListener("keyup", searchMealController);
 
-window.addEventListener('load', function() {
+window.addEventListener("load", function() {
   trendingMeal();
   categoryController();
-})
+});
 
 elements.iconHome.addEventListener("click", () => {
   const titleSubCategorie = document.querySelector(".title-subcategorie");
@@ -130,10 +134,7 @@ elements.iconHome.addEventListener("click", () => {
   if (createButtonBack.called) createButtonBack.called = false;
   if (titleSubCategorie) titleSubCategorie.remove();
   if (buttonBack) buttonBack.remove();
-  delete state.myrecipe;
-  delete state.sub;
-  delete state.each;
-  delete state.search;
+  state = {};
   categoryController();
 });
 
@@ -302,7 +303,20 @@ document.querySelector(".top").addEventListener("click", function(e) {
 });
 
 document.querySelector(".more").addEventListener("click", function() {
-  showMore();
+  if (state.sub) {
+    showMore(urlSubCategory.arrSubCategories, displayMeals);
+    if (loadList.end > urlSubCategory.arrSubCategories.length) {
+      const divAll = document.querySelector(".more");
+      divAll.style = "display: none";
+    }
+  }
+  if (state.myrecipe) {
+    showMore(arrSaveMeal, displayMyRecipes);
+    if (loadList.end > arrSaveMeal.length) {
+      const divAll = document.querySelector(".more");
+      divAll.style = "display: none";
+    }
+  }
 });
 
 const options = {
