@@ -1,4 +1,4 @@
-import "core-js/stable";
+// import "core-js/stable";
 import "regenerator-runtime/runtime";
 import "./styles/main.scss";
 import "./img/mediterranean-cuisine-2378758_1280.jpg";
@@ -14,7 +14,7 @@ import {
   closeModal,
   showModal,
   deleteMeal,
-  displayDivMore
+  displayDivMore,
 } from "./js/models/base";
 import { elements } from "./js/views/baseview";
 import { getMealSearch } from "./js/models/searchmodel";
@@ -23,10 +23,12 @@ import { categories } from "./js/models/categorymodel";
 import {
   urlSubCategory,
   showMore,
+  arrSubCategories,
 } from "./js/models/subcategories";
 import { getEachMeal } from "./js/models/eachmeal";
 import { displayMyRecipes } from "./js/views/myrecipeview";
 import { addMyRecipe } from "./js/models/addmyrecipe";
+import { call } from "file-loader";
 
 let subcategorieLog = "";
 
@@ -40,13 +42,11 @@ function searchMealController() {
 
 async function myRecipesController() {
   const trendingMeal = document.querySelector(".section-trend");
-  const titleCategorie = document.querySelector(".title-categories");
-  const titleSubCategorie = document.querySelector(".title-subcategorie");
   const buttonBack = document.getElementById("button_back");
+  const title = document.querySelector('.section-categories-title')
+  title.innerHTML = ''
   if (trendingMeal) trendingMeal.style = "display: none";
-  if (titleCategorie) titleCategorie.remove();
   if (buttonBack) buttonBack.remove();
-  if (titleSubCategorie) titleSubCategorie.remove();
   clear();
   delete state.category;
   delete state.sub;
@@ -61,57 +61,35 @@ async function myRecipesController() {
   displayDivMore(arrSaveMeal);
 }
 
-function categoryController() {
-  elements.trend.style = "display: flex";
-  const titleCategorie = document.querySelector(".title-categories");
-  const titleSubcategorie = document.querySelector(".title-subcategorie");
-  const buttonBack = document.querySelector(".button_click");
-  const divAll = document.querySelector(".more");
-  divAll.style = "display: none";
-  if (!titleCategorie) {
-    const h1 = `<h1 class="title-categories">Categories</h1>`;
-    elements.categories.insertAdjacentHTML("beforebegin", h1);
+function loadFunction(property, callback) {
+  const urlHash = property.split('/')
+  const [category, meal] = urlHash
+  // console.log('meal category>>', category)
+  const urls = {
+    [property]: function() {
+      if(property === 'home') {
+        elements.categories.innerHTML = ''
+        categories()
+      }else if(urlHash.length >= 2) {
+        elements.categories.innerHTML = ''
+        getEachMeal(meal)
+      }else {
+        elements.categories.innerHTML = ''
+        urlSubCategory(property)
+      }
+    }
   }
-  if (titleSubcategorie || buttonBack) {
-    titleSubcategorie.remove();
-    buttonBack.remove();
-  }
-  clear();
-  state.category = categories();
+  callback(urls[property])
+  // console.log('property', property)
 }
 
-const subCategoryController = function(url) {
-  elements.trend.style = "display: none";
-  const iconTop = document.querySelector(".top");
-  iconTop.style = `position: fixed; 
-      top: ${window.innerHeight - iconTop.offsetHeight}px; 
-      right: 10px;
-      opacity: 0`;
-  const h1 = `<h1 class="title-subcategorie">${url}</h1>`;
-  const titleCategorie = document.querySelector(".title-categories");
-  if (titleCategorie) titleCategorie.remove();
-  if (!createButtonBack.called) {
-    createButtonBack();
+function getHash() {
+  const hash = location.hash.substring(1)
+  if(!location.hash) {
+    location.hash = 'home'
   }
-  clear();
-  delete state.category;
-  delete state.each;
-  state.sub = urlSubCategory(url);
-  elements.categories.insertAdjacentHTML("beforebegin", h1);
-};
-
-function eachMealController(url) {
-  const divAll = document.querySelector(".more");
-  divAll.style = "display: none";
-  const trendView = document.querySelector(".section-trend");
-  const titleCategorie = document.querySelector(".title-categories");
-  const titleSubcategorie = document.querySelector(".title-subcategorie");
-  if (trendView) trendView.style = "display: none";
-  if (titleCategorie) titleCategorie.remove();
-  if (titleSubcategorie) titleSubcategorie.remove();
-  clear();
-  delete state.sub;
-  state.each = getEachMeal(url);
+  loadFunction(hash, (property) => property())
+  // console.log(hash)
 }
 
 //events////////////////////////
@@ -119,9 +97,11 @@ function eachMealController(url) {
 elements.search.addEventListener("change", searchMealController);
 elements.search.addEventListener("keyup", searchMealController);
 
+window.addEventListener('hashchange', getHash)
+getHash()
+
 window.addEventListener('load', function() {
   trendingMeal();
-  categoryController();
 })
 
 elements.iconHome.addEventListener("click", () => {
@@ -217,7 +197,9 @@ elements.sectionCategory.addEventListener("click", function(e) {
   const button = e.target.closest("#button_back");
   const saveButton = e.target.closest(".save_recipe");
   const deleteButton = e.target.closest(".button_delete");
+  
   if (sub) {
+    // console.log(sub)
     subCategoryController(sub.dataset.categorie);
     subcategorieLog = sub.dataset.categorie;
   }
@@ -232,9 +214,8 @@ elements.sectionCategory.addEventListener("click", function(e) {
   }
   if (button && state.sub) {
     createButtonBack.called = false;
-    categoryController();
   } else if (button && state.each) {
-    subCategoryController(subcategorieLog);
+
   } else if (button && state.myrecipe) {
     myRecipesController();
   }
@@ -326,3 +307,8 @@ const callback = function(entries, observe) {
 };
 const observer = new IntersectionObserver(callback, options);
 observer.observe(document.querySelector(".footer"));
+
+
+
+
+

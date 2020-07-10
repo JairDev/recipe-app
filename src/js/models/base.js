@@ -5,6 +5,7 @@ import { displayEachMeal } from "../views/eachmealview";
 export const state = {};
 export const arrSaveMeal = JSON.parse(localStorage.getItem("meals")) || [];
 export let objAddMeal = {};
+export var subcategorieLog = "";
 
 export function loading(place) {
   const load = `
@@ -20,13 +21,14 @@ export function clearSearch() {
   elements.searchResult.innerHTML = "";
 }
 
-export async function blob(meal, displayfunc) {
+export async function blob(meal, hash, displayfunc) {
+  // console.log(urlHash)
   try {
     const url = meal.strMealThumb;
     const response = await fetch(url);
     const data = await response.blob();
     const objUrl = URL.createObjectURL(data);
-    return displayfunc(objUrl, meal);
+    return displayfunc(objUrl, meal, hash);
   } catch (error) {
     console.log(error);
   }
@@ -97,10 +99,11 @@ export function closeModal() {
 export const createButtonBack = function() {
   createButtonBack.called = true;
   const buttonBack = `<div id="button_back" class="button_click">Back</div>`;
-  elements.categories.insertAdjacentHTML("beforebegin", buttonBack);
+  elements.sectionCategory.insertAdjacentHTML("afterbegin", buttonBack);
 };
 export function clear() {
   elements.categories.innerHTML = "";
+ 
 }
 
 export function displayDivMore(arr) {

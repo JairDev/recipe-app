@@ -9,6 +9,7 @@ let numberPerPage = 12;
 
 export async function urlSubCategory(url) {
   urlSubCategory.arrSubCategories = [];
+  console.log('url>>', url)
   currentPage = 1;
   const getSubcategorie = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${url}`;
   try {
@@ -19,7 +20,7 @@ export async function urlSubCategory(url) {
     loadList(urlSubCategory.arrSubCategories);
     displayDivMore(elementsList);
     const food = elementsList.map(meal => {
-      blob(meal, displayMeals);
+      blob(meal, url, displayMeals);
     });
     clearLoad(elements.categories);
   } catch (error) {

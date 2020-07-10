@@ -7,12 +7,15 @@ export async function getMealSearch(query) {
     const get = `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`;
     const response = await fetch(get);
     const data = await response.json();
+    
     if (elements.search.value === "") {
       clearSearch();
     } else {
       clearSearch();
+      console.log(data)
       const arrMealSearch = [];
       arrMealSearch.push(...data.meals);
+      console.log(arrMealSearch)
       const matchArr = filterMealSearch(query, arrMealSearch);
       matchArr.map(meal => {
         blob(meal, displaySearchMeals);

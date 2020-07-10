@@ -8,7 +8,10 @@ export async function trendingMeal() {
     loading(elements.sectionTrend);
     const response = await fetch(url);
     const data = await response.json();
-    blob(data.meals[0], displayTrend)
+    const { strCategory } = data.meals[0]
+    console.log(data.meals)
+    console.log(strCategory)
+    blob(...data.meals, strCategory, displayTrend)
     clearLoad(elements.sectionTrend);
   } catch (error) {
     console.log(error);
