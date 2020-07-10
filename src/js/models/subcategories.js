@@ -2,15 +2,19 @@ import { displayMeals } from "../views/subcategoriesview";
 import { blob, loading, clearLoad, displayDivMore } from "./base";
 import { elements } from "../views/baseview";
 
-export let arrSubCategories = [];
-export let elementsList = [];
-let currentPage = 1;
-let numberPerPage = 12;
+export const objCurrent = {
+  currentPage: 1,
+  numberPerPage: 12
+};
 
 export async function urlSubCategory(url) {
   urlSubCategory.arrSubCategories = [];
+<<<<<<< HEAD
   console.log('url>>', url)
   currentPage = 1;
+=======
+  objCurrent.currentPage = 1;
+>>>>>>> 32b7e891db97dac209ac402adbd1ed48fea524ea
   const getSubcategorie = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${url}`;
   try {
     loading(elements.categories);
@@ -18,9 +22,15 @@ export async function urlSubCategory(url) {
     const data = await response.json();
     urlSubCategory.arrSubCategories.push(...data.meals);
     loadList(urlSubCategory.arrSubCategories);
+<<<<<<< HEAD
     displayDivMore(elementsList);
     const food = elementsList.map(meal => {
       blob(meal, url, displayMeals);
+=======
+    displayDivMore(loadList.elementsList);
+    loadList.elementsList.map(meal => {
+      blob(meal, displayMeals);
+>>>>>>> 32b7e891db97dac209ac402adbd1ed48fea524ea
     });
     clearLoad(elements.categories);
   } catch (error) {
@@ -29,15 +39,16 @@ export async function urlSubCategory(url) {
 }
 
 export function loadList(arr) {
-  let start = (currentPage - 1) * numberPerPage;
-  let end = start + numberPerPage;
-  elementsList = arr.slice(start, end);
+  loadList.elementsList = [];
+  let start = (objCurrent.currentPage - 1) * objCurrent.numberPerPage;
+  loadList.end = start + objCurrent.numberPerPage;
+  loadList.elementsList = arr.slice(start, loadList.end);
 }
 
-export function showMore() {
-  currentPage += 1;
-  loadList(urlSubCategory.arrSubCategories);
-  elementsList.forEach(meal => {
-    blob(meal, displayMeals);
+export function showMore(arr, display) {
+  objCurrent.currentPage += 1;
+  loadList(arr);
+  loadList.elementsList.forEach(meal => {
+    blob(meal, display);
   });
 }

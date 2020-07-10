@@ -2,7 +2,6 @@ import { elements } from "../views/baseview";
 import { displayMeals } from "../views/categoryview";
 import { displayEachMeal } from "../views/eachmealview";
 
-export const state = {};
 export const arrSaveMeal = JSON.parse(localStorage.getItem("meals")) || [];
 export let objAddMeal = {};
 export var subcategorieLog = "";
@@ -113,4 +112,5 @@ export function displayDivMore(arr) {
   } else {
     divMore.style = "display: none";
   }
+ 
 }
