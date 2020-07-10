@@ -19,7 +19,7 @@ export async function urlSubCategory(url) {
     loadList(urlSubCategory.arrSubCategories);
     displayDivMore(loadList.elementsList);
     loadList.elementsList.map(meal => {
-      blob(meal, displayMeals);
+      blob(meal, url, displayMeals);
     });
     clearLoad(elements.categories);
   } catch (error) {

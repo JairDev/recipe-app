@@ -81,9 +81,7 @@ function loadFunction(property, callback) {
       }
     }
   }
-  clear();
-  state = {};
-  state.category = categories();
+  callback(urls[property])
 }
 
 function getHash() {
@@ -91,34 +89,19 @@ function getHash() {
   if(!location.hash) {
     location.hash = 'home'
   }
-  clear();
-  state = {};
-  state.sub = urlSubCategory(url);
-  elements.categories.insertAdjacentHTML("beforebegin", h1);
+  loadFunction(hash, (property) => property())
 };
-
-function eachMealController(url) {
-  const divAll = document.querySelector(".more");
-  divAll.style = "display: none";
-  const trendView = document.querySelector(".section-trend");
-  const titleCategorie = document.querySelector(".title-categories");
-  const titleSubcategorie = document.querySelector(".title-subcategorie");
-  if (trendView) trendView.style = "display: none";
-  if (titleCategorie) titleCategorie.remove();
-  if (titleSubcategorie) titleSubcategorie.remove();
-  clear();
-  state = {};
-  state.each = getEachMeal(url);
-}
 
 //events////////////////////////
 
 elements.search.addEventListener("change", searchMealController);
 elements.search.addEventListener("keyup", searchMealController);
 
+window.addEventListener('hashchange', getHash)
+
 window.addEventListener("load", function() {
   trendingMeal();
-  categoryController();
+  getHash()
 });
 
 elements.iconHome.addEventListener("click", () => {
@@ -214,11 +197,11 @@ elements.sectionCategory.addEventListener("click", function(e) {
   
   if (sub) {
     // console.log(sub)
-    subCategoryController(sub.dataset.categorie);
+    // subCategoryController(sub.dataset.categorie);
     subcategorieLog = sub.dataset.categorie;
   }
   if (each) {
-    eachMealController(each.dataset.meal);
+    // eachMealController(each.dataset.meal);
   }
   if (saveButton) {
     saveMeal(arrSaveMeal, saveButton.dataset.id);
