@@ -9,12 +9,7 @@ export const objCurrent = {
 
 export async function urlSubCategory(url) {
   urlSubCategory.arrSubCategories = [];
-<<<<<<< HEAD
-  console.log('url>>', url)
-  currentPage = 1;
-=======
   objCurrent.currentPage = 1;
->>>>>>> 32b7e891db97dac209ac402adbd1ed48fea524ea
   const getSubcategorie = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${url}`;
   try {
     loading(elements.categories);
@@ -22,15 +17,9 @@ export async function urlSubCategory(url) {
     const data = await response.json();
     urlSubCategory.arrSubCategories.push(...data.meals);
     loadList(urlSubCategory.arrSubCategories);
-<<<<<<< HEAD
-    displayDivMore(elementsList);
-    const food = elementsList.map(meal => {
-      blob(meal, url, displayMeals);
-=======
     displayDivMore(loadList.elementsList);
     loadList.elementsList.map(meal => {
       blob(meal, displayMeals);
->>>>>>> 32b7e891db97dac209ac402adbd1ed48fea524ea
     });
     clearLoad(elements.categories);
   } catch (error) {
