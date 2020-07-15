@@ -5,7 +5,6 @@ import "./img/mediterranean-cuisine-2378758_1280.jpg";
 import {
   clearSearch,
   clear,
-  createButtonBack,
   saveMeal,
   blob,
   arrSaveMeal,
@@ -25,12 +24,12 @@ import {
   objCurrent,
   loadList
 } from "./js/models/subcategories";
-import { getEachMeal } from "./js/models/eachmeal";
+import { getEachMeal, getMealObj } from "./js/models/eachmeal";
 import { displayMyRecipes } from "./js/views/myrecipeview";
 import { addMyRecipe } from "./js/models/addmyrecipe";
 import { displayMeals } from "./js/views/subcategoriesview";
+import { mealModule, mealArr } from "./js/views/eachmealview"
 
-let subcategorieLog = "";
 let state = {};
 
 function addMyRecipeController(name, instructions, ingredient) {
@@ -41,55 +40,62 @@ function searchMealController() {
   state.search = getMealSearch(this.value);
 }
 
-async function myRecipesController() {
-  loadList.elementsList = [];
-  const trendingMeal = document.querySelector(".section-trend");
-  const buttonBack = document.getElementById("button_back");
-  const title = document.querySelector('.section-categories-title')
-  title.innerHTML = ''
-  if (trendingMeal) trendingMeal.style = "display: none";
-  if (buttonBack) buttonBack.remove();
-  clear();
-  state = {};
-  objCurrent.currentPage = 1;
-  loadList(arrSaveMeal);
-  displayDivMore(arrSaveMeal);
-  state.myrecipe = await loadList.elementsList.map(meal => {
-    blob(meal, displayMyRecipes);
-  });
+function myRecipesController() {
+  arrSaveMeal.map(meal => {
+    blob(meal.strCategory, meal, displayMyRecipes)
+  })
   if (arrSaveMeal.length === 0) {
     const h2 = `<h2 class ="nothing">Nothing yet ...</h2>`;
     elements.categories.innerHTML = h2;
   }
+  console.log(arrSaveMeal)
 }
 
-function loadFunction(property, callback) {
-  const urlHash = property.split('/')
-  const [category, meal] = urlHash
-  // console.log('meal category>>', category)
+function loadFunction(hash, property, callback) {
+  const {state, category, meal} = property
   const urls = {
-    [property]: function() {
-      if(property === 'home') {
-        elements.categories.innerHTML = ''
-        categories()
-      }else if(urlHash.length >= 2) {
-        elements.categories.innerHTML = ''
-        getEachMeal(meal)
-      }else {
-        elements.categories.innerHTML = ''
-        urlSubCategory(property)
-      }
+    'home': function() {
+      clear()
+      elements.sectionTrend.classList.remove('not-display')
+      elements.title.classList.add('not-display-title')
+      categories()
+    },
+    [`${state}/${category}`]: function() {
+      clear()
+      elements.sectionTrend.classList.add('not-display')
+      elements.title.classList.remove('not-display-title')
+      elements.title.innerHTML = ''
+      urlSubCategory(category)
+    },
+    [`${state}/${category}/${meal}`]: function() {
+      clear()
+      elements.sectionTrend.classList.add('not-display')
+      elements.title.classList.add('not-display-title')
+      getEachMeal(meal);
+    },
+    'myrecipes': function() {
+      clear()
+      elements.sectionTrend.classList.add('not-display')
+      elements.title.classList.add('not-display-title')
+      myRecipesController()
     }
   }
-  callback(urls[property])
+  callback(urls[hash])
 }
 
 function getHash() {
   const hash = location.hash.substring(1)
+  const url = hash.split('/')
+  const [recipes, category, food] = url
+  const obj = {
+    state: recipes,
+    category: category,
+    meal: food
+  }
   if(!location.hash) {
     location.hash = 'home'
   }
-  loadFunction(hash, (property) => property())
+  loadFunction(hash , obj, (property) => property())
 };
 
 //events////////////////////////
@@ -102,16 +108,6 @@ window.addEventListener('hashchange', getHash)
 window.addEventListener("load", function() {
   trendingMeal();
   getHash()
-});
-
-elements.iconHome.addEventListener("click", () => {
-  const titleSubCategorie = document.querySelector(".title-subcategorie");
-  const buttonBack = document.getElementById("button_back");
-  if (createButtonBack.called) createButtonBack.called = false;
-  if (titleSubCategorie) titleSubCategorie.remove();
-  if (buttonBack) buttonBack.remove();
-  state = {};
-  categoryController();
 });
 
 elements.formMyRecipe.addEventListener("submit", e => {
@@ -154,9 +150,9 @@ document.addEventListener("click", function(e) {
   }
 });
 
-elements.myRecipes.addEventListener("click", e => {
-  myRecipesController();
-});
+// elements.myRecipes.addEventListener("click", e => {
+//   myRecipesController();
+// });
 
 elements.iconSearch.addEventListener("click", () => {
   clearSearch();
@@ -184,7 +180,9 @@ elements.searchContent.addEventListener("click", e => {
 elements.trend.addEventListener("click", function(e) {
   const trend = e.target.closest(".section-trend__content");
   if (trend) {
-    eachMealController(trend.dataset.meal);
+    elements.categories.innerHTML = ''
+    elements.sectionTrend.classList.add('not-display')
+    getEachMeal(trend.dataset.meal);
   }
 });
 
@@ -194,27 +192,11 @@ elements.sectionCategory.addEventListener("click", function(e) {
   const button = e.target.closest("#button_back");
   const saveButton = e.target.closest(".save_recipe");
   const deleteButton = e.target.closest(".button_delete");
-  
-  if (sub) {
-    // console.log(sub)
-    // subCategoryController(sub.dataset.categorie);
-    subcategorieLog = sub.dataset.categorie;
-  }
-  if (each) {
-    // eachMealController(each.dataset.meal);
-  }
   if (saveButton) {
     saveMeal(arrSaveMeal, saveButton.dataset.id);
   }
   if (deleteButton) {
     deleteMeal(arrSaveMeal, deleteButton.dataset.idfood);
-  }
-  if (button && state.sub) {
-    createButtonBack.called = false;
-  } else if (button && state.each) {
-
-  } else if (button && state.myrecipe) {
-    myRecipesController();
   }
 });
 
@@ -317,8 +299,6 @@ const callback = function(entries, observe) {
 };
 const observer = new IntersectionObserver(callback, options);
 observer.observe(document.querySelector(".footer"));
-
-
 
 
 

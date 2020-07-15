@@ -1,5 +1,6 @@
 export const elements = {
   main: document.querySelector('.main'),
+  title: document.querySelector('.section-categories-title'),
   trend: document.querySelector('.section-trend'),
   categories: document.querySelector('.section-categories__content'),
   search: document.querySelector('.menu__search__input'),

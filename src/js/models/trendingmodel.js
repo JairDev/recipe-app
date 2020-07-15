@@ -9,9 +9,7 @@ export async function trendingMeal() {
     const response = await fetch(url);
     const data = await response.json();
     const { strCategory } = data.meals[0]
-    console.log(data.meals)
-    console.log(strCategory)
-    blob(...data.meals, strCategory, displayTrend)
+    blob(strCategory, ...data.meals, displayTrend)
     clearLoad(elements.sectionTrend);
   } catch (error) {
     console.log(error);

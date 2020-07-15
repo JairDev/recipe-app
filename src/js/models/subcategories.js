@@ -1,5 +1,5 @@
 import { displayMeals } from "../views/subcategoriesview";
-import { blob, loading, clearLoad, displayDivMore } from "./base";
+import { blob, loading, clearLoad, displayDivMore, title } from "./base";
 import { elements } from "../views/baseview";
 
 export const objCurrent = {
@@ -19,7 +19,7 @@ export async function urlSubCategory(url) {
     loadList(urlSubCategory.arrSubCategories);
     displayDivMore(loadList.elementsList);
     loadList.elementsList.map(meal => {
-      blob(meal, url, displayMeals);
+      blob(url, meal, displayMeals);
     });
     clearLoad(elements.categories);
   } catch (error) {

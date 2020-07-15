@@ -1,6 +1,6 @@
 import { elements } from "../views/baseview";
 import { displayMeals } from "../views/categoryview";
-import { displayEachMeal } from "../views/eachmealview";
+import { displayEachMeal, mealObj, mealArr } from "../views/eachmealview";
 
 export const arrSaveMeal = JSON.parse(localStorage.getItem("meals")) || [];
 export let objAddMeal = {};
@@ -20,14 +20,19 @@ export function clearSearch() {
   elements.searchResult.innerHTML = "";
 }
 
-export async function blob(meal, hash, displayfunc) {
-  // console.log(urlHash)
+export function title(insert = 'Categories') {
+  const div =  document.querySelector('.section-categories-title')
+  const title = `<span class="title">${insert}</span>`
+  div.innerHTML = title
+}
+
+export async function blob(hash, meal, displayfunc) {
   try {
     const url = meal.strMealThumb;
     const response = await fetch(url);
     const data = await response.blob();
     const objUrl = URL.createObjectURL(data);
-    return displayfunc(objUrl, meal, hash);
+    return displayfunc(hash, objUrl, meal);
   } catch (error) {
     console.log(error);
   }
@@ -51,8 +56,9 @@ export function saveLocal(item) {
 
 export function saveMeal(arr, id) {
   const idx = arr.findIndex(index => index.idMeal === id);
+  const findMeal = mealArr.find(meal => meal.idMeal === id)
   if (idx === -1) {
-    arr.push(displayEachMeal.obj);
+    arr.push(findMeal);
     saveLocal(arr);
     document.querySelector(".save_recipe").classList.add("display_success");
     setTimeout(() => {
@@ -95,11 +101,6 @@ export function closeModal() {
   elements.main.style = "filter: blur(0px)";
 }
 
-export const createButtonBack = function() {
-  createButtonBack.called = true;
-  const buttonBack = `<div id="button_back" class="button_click">Back</div>`;
-  elements.sectionCategory.insertAdjacentHTML("afterbegin", buttonBack);
-};
 export function clear() {
   elements.categories.innerHTML = "";
  
@@ -107,10 +108,9 @@ export function clear() {
 
 export function displayDivMore(arr) {
   const divMore = document.querySelector(".more");
-  if (arr.length >= 11) {
+  if (arr.length >= 16) {
     divMore.style = "display: flex";
   } else {
     divMore.style = "display: none";
   }
- 
 }
