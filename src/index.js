@@ -178,12 +178,12 @@ elements.searchContent.addEventListener("click", e => {
 });
 
 elements.trend.addEventListener("click", function(e) {
-  const trend = e.target.closest(".section-trend__content");
-  if (trend) {
-    elements.categories.innerHTML = ''
-    elements.sectionTrend.classList.add('not-display')
-    getEachMeal(trend.dataset.meal);
-  }
+  // const trend = e.target.closest(".section-trend__content");
+  // if (trend) {
+  //   elements.categories.innerHTML = ''
+  //   elements.sectionTrend.classList.add('not-display')
+  //   getEachMeal(trend.dataset.meal);
+  // }
 });
 
 elements.sectionCategory.addEventListener("click", function(e) {
@@ -299,6 +299,5 @@ const callback = function(entries, observe) {
 };
 const observer = new IntersectionObserver(callback, options);
 observer.observe(document.querySelector(".footer"));
-
 
 

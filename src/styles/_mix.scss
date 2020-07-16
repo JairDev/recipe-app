@@ -1,21 +1,32 @@
 @mixin style($map) {
+  // border: 1px solid red;
   border-bottom: 1px solid map-get($map, "base");
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
   margin: .8rem;
-  width: 30%;
+  flex: 1 1 40%;
   & img {
     max-width: 100%;
     object-fit: cover;
   }
-
+  
   & h2 {
-    font-size: 1.3rem;
     margin-top: 1rem;
-    margin-bottom: .5rem;
     letter-spacing: 1px;
+  }
+  & span {
+    font-size: calc(1em + .7vw);
+    letter-spacing: .1em;
+    margin-top: 1.5em;
+    margin-bottom: .5em;
+  }
+  & a {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
   }
 }
 

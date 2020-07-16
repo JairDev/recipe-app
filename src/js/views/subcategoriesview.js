@@ -7,7 +7,7 @@ export function displayMeals(hash, imgUrl, meal) {
   <div class="section-categories__content__meals" data-meal="${meal.strMeal}">
     <a href="#recipes/${hash}/${meal.strMeal}" class="link_categories">
       <img alt="${meal.strMeal}" src="${imgUrl}">
-      <h2 >${meal.strMeal}</h2>
+      <span class="text-subcategory">${meal.strMeal}</span>
     </a>
   </div>
     `;

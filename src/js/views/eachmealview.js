@@ -20,10 +20,11 @@ export function displayEachMeal(hash, imgMeal, meal) {
                 <span class="span-save">Save recipe</span>
                 </div>`;
   const html = `
-      <a href="${back}"><div id="button_back" class="button_click">Back</div></a>
+      
       <div class="section-categories__content__eachmeal">
+      <a href="${back}"><div id="button_back" class="button_click">Back</div></a>
         <div class="name_eachmeal">
-          <h2>${meal.strMeal}</h2>
+          <span class="text-eachmeal">${meal.strMeal}</span>
           ${but}
         </div>
         <div class="img_eachmeal">

@@ -5,7 +5,7 @@ export function displayMeals(imgUrl, category) {
   <div class="section-categories__content__categories" data-categorie="${category.strCategory}">
     <a href="#recipes/${category.strCategory}" data="${category.strCategory}" class="link_categories">
       <img alt="${category.strCategory}" src="${imgUrl}">
-      <h2 >${category.strCategory}</h2>
+      <span class="text-category">${category.strCategory}</span>
     </a>
   </div>
     `;
