@@ -10,4 +10,5 @@ export function displayMeals(imgUrl, category) {
   </div>
     `;
   elements.categories.insertAdjacentHTML("afterbegin", html);
+  const link = document.querySelector('.link_categories')
 }

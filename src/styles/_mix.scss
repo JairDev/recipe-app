@@ -17,7 +17,6 @@
     letter-spacing: 1px;
   }
   & span {
-    font-size: calc(1em + .7vw);
     letter-spacing: .1em;
     margin-top: 1.5em;
     margin-bottom: .5em;
@@ -27,7 +26,14 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    // pointer-events: none;
   }
+
+  & .link_categories.active {
+    pointer-events: initial;
+    border: 1px solid red;
+  }
+  
 }
 
 @mixin load {
@@ -35,7 +41,11 @@
     display: inline-block;
     width: 80px;
     height: 80px;
-    margin: 0 auto;
+    // margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
   }
   .lds-dual-ring:after {
     content: " ";

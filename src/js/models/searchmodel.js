@@ -1,41 +1,31 @@
 import { elements } from '../views/baseview'
-import { blob } from './base'
+import { blob, clearSearch, getMeal } from './base'
 import { displaySearchMeals } from '../views/searchview'
 
-export async function getMealSearch(query) {
+export async function searchMealController(e) {
   try {
-    const get = `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`;
-    const response = await fetch(get);
-    const data = await response.json();
-    
-    if (elements.search.value === "") {
-      clearSearch();
-    } else {
-      clearSearch();
-      console.log(data)
-      const arrMealSearch = [];
-      arrMealSearch.push(...data.meals);
-      console.log(arrMealSearch)
-      const matchArr = filterMealSearch(query, arrMealSearch);
-      matchArr.map(meal => {
-        blob(meal, displaySearchMeals);
-      });
+    if(!this.value) {
+      clearSearch()
+    }else {
+      clearSearch()
+      const get = `https://www.themealdb.com/api/json/v1/1/search.php?s=${this.value}`;
+      const search = await getMeal(get)
+      const filterMeal = filterMealSearch(this.value, search.meals)
+      filterMeal.map(async (meal) => {
+        const imgBlob = await blob(meal, 'strMealThumb')
+        displaySearchMeals(imgBlob, meal)
+      })
     }
   } catch (error) {
-    console.log(error);
-    const err = `<p class="error_match">Sorry, no food matches...</p>`;
-    elements.searchResult.innerHTML = err;
+    console.error(error)
   }
-
+  e.preventDefault()
 }
 
-function filterMealSearch(words, arrMeal) {
+export function filterMealSearch(words, arrMeal) {
   return arrMeal.filter(meal => {
     const regex = new RegExp(words, "gi");
     return meal.strMeal.match(regex);
   });
 }
 
-function clearSearch() {
-  elements.searchResult.innerHTML = "";
-}

@@ -1,21 +1,11 @@
 import { elements } from './baseview'
 export const mealArr = []
 
-export function displayEachMeal(hash, imgMeal, meal) {
+export function displayEachMeal(imgMeal, meal) {
   mealArr.push(meal)
   let contain = location.hash.substring(1).split('/')
   let [ myrecipe ] = contain
   let back = myrecipe === 'myrecipes' ? '#myrecipes' : `#recipes/${meal.strCategory}`
-  let ingredients = ``;
-  let measure = ``;
-  for (let key in meal) {
-    if (key.includes("strIngredient") && meal[key]) {
-      ingredients += `<li>${meal[key]}</li>`;
-    }
-    if (key.includes("strMeasure") && meal[key]) {
-      measure += `<span>${meal[key]}</span>`;
-    }
-  }
   const but = `<div id="savebut" class="save_recipe" data-meal="${meal.strMeal}" data-id="${meal.idMeal}">
                 <span class="span-save">Save recipe</span>
                 </div>`;
@@ -32,25 +22,50 @@ export function displayEachMeal(hash, imgMeal, meal) {
         </div>
 
         <div class="ingredients_eachmeal">
-          <h2>Ingredients:</h2>
+          <span class="ingredients_eachmeal__sub-title">Ingredients:</span>
           <div class="list_ingredients">
-            <ul>
-              ${ingredients}
-            </ul>
-            <div class="list_measure">
-            ${measure}
+            <table class="table-in">
+              <tbody class="table-body"></tbody>
+            </table>
           </div>
-          </div>
-
         </div>
 
         <div class="instructions_eachmeal">
-          <h2>Instructions:</h2>
+          <span class="instructions_eachmeal-sub-title">Instructions:</span>
           <p>${meal.strInstructions}
         </div>
     </div>
     `;
   elements.categories.insertAdjacentHTML("afterbegin", html);
+  objMeal(meal)
+}
+
+function objMeal(obj) {
+  let objIngredient = []
+  let objMeasure = []
+  Object.keys(obj).map(key => {
+    let ingredients = key.includes('strIngredient') && obj[key] !== "" && obj[key] !== null
+    let measure = key.includes('strMeasure') && obj[key] !== " " && obj[key] !== null
+    if(ingredients) {
+      objIngredient.push(obj[key])
+    }
+    if(measure) {
+      objMeasure.push(obj[key])
+    }
+  })
+  for(let i = 0; i < objIngredient.length; i++) {
+    viewIngredient(objIngredient[i], objMeasure[i])
+  }
+}
+
+function viewIngredient(ingredient, measure) {
+  const table = document.querySelector('.table-body')
+  const html = `<tr>
+                  <td class="table-td">${ingredient}</td>
+                  <td class="table-td">${measure}</td>
+                </tr>`
+  table.insertAdjacentHTML('beforeend', html)
+
 }
 
 

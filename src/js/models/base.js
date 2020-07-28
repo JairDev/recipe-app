@@ -4,7 +4,13 @@ import { displayEachMeal, mealObj, mealArr } from "../views/eachmealview";
 
 export const arrSaveMeal = JSON.parse(localStorage.getItem("meals")) || [];
 export let objAddMeal = {};
-export var subcategorieLog = "";
+export let subcategorieLog = "";
+
+export async function getMeal(query) {
+  const response = await fetch(query);
+  const data = await response.json();
+  return data
+}
 
 export function loading(place) {
   const load = `
@@ -20,34 +26,18 @@ export function clearSearch() {
   elements.searchResult.innerHTML = "";
 }
 
-export function title(insert = 'Categories') {
+export function title(insert) {
   const div =  document.querySelector('.section-categories-title')
   const title = `<span class="title">${insert}</span>`
   div.innerHTML = title
 }
 
-export async function blob(hash, meal, displayfunc) {
-  try {
-    const url = meal.strMealThumb;
-    const response = await fetch(url);
-    const data = await response.blob();
-    const objUrl = URL.createObjectURL(data);
-    return displayfunc(hash, objUrl, meal);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function blobImgCategory(category) {
-  try {
-    const url = category.strCategoryThumb;
-    const response = await fetch(url);
-    const data = await response.blob();
-    const objUrl = URL.createObjectURL(data);
-    displayMeals(objUrl, category);
-  } catch (error) {
-    console.log(error);
-  }
+export async function blob(meal, thumb) {
+  const url = meal[thumb];
+  const response = await fetch(url);
+  const data = await response.blob();
+  const objUrl = URL.createObjectURL(data);
+  return objUrl
 }
 
 export function saveLocal(item) {
@@ -108,9 +98,9 @@ export function clear() {
 
 export function displayDivMore(arr) {
   const divMore = document.querySelector(".more");
-  if (arr.length >= 16) {
-    divMore.style = "display: flex";
+  if (arr.length >= 15) {
+    divMore.classList.add("flex")
   } else {
-    divMore.style = "display: none";
+    divMore.classList.remove("flex")
   }
 }

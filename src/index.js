@@ -2,6 +2,7 @@
 import "regenerator-runtime/runtime";
 import "./styles/main.scss";
 import "./img/mediterranean-cuisine-2378758_1280.jpg";
+import "./img/default-image.png";
 import {
   clearSearch,
   clear,
@@ -13,9 +14,11 @@ import {
   showModal,
   deleteMeal,
   displayDivMore,
+  title,
+  getMeal
 } from "./js/models/base";
 import { elements } from "./js/views/baseview";
-import { getMealSearch } from "./js/models/searchmodel";
+import { getMealSearch, filterMealSearch, searchMealController } from "./js/models/searchmodel";
 import { trendingMeal } from "./js/models/trendingmodel";
 import { categories } from "./js/models/categorymodel";
 import {
@@ -27,17 +30,17 @@ import {
 import { getEachMeal, getMealObj } from "./js/models/eachmeal";
 import { displayMyRecipes } from "./js/views/myrecipeview";
 import { addMyRecipe } from "./js/models/addmyrecipe";
-import { displayMeals } from "./js/views/subcategoriesview";
-import { mealModule, mealArr } from "./js/views/eachmealview"
+// import { displayMeals } from "./js/views/subcategoriesview";
+import { displayMeals } from "./js/views/categoryview";
+import { displaySearchMeals } from "./js/views/searchview";
+import { displayTrend } from "./js/views/trendingview";
+
+
 
 let state = {};
 
 function addMyRecipeController(name, instructions, ingredient) {
   addMyRecipe(name, instructions, ingredient);
-}
-
-function searchMealController() {
-  state.search = getMealSearch(this.value);
 }
 
 function myRecipesController() {
@@ -65,6 +68,7 @@ function loadFunction(hash, property, callback) {
       elements.sectionTrend.classList.add('not-display')
       elements.title.classList.remove('not-display-title')
       elements.title.innerHTML = ''
+      title(category)
       urlSubCategory(category)
     },
     [`${state}/${category}/${meal}`]: function() {
@@ -100,12 +104,12 @@ function getHash() {
 
 //events////////////////////////
 
-elements.search.addEventListener("change", searchMealController);
+// elements.search.addEventListener("change", searchMealController);
 elements.search.addEventListener("keyup", searchMealController);
 
 window.addEventListener('hashchange', getHash)
 
-window.addEventListener("load", function() {
+document.addEventListener("DOMContentLoaded", function() {
   trendingMeal();
   getHash()
 });
@@ -177,14 +181,16 @@ elements.searchContent.addEventListener("click", e => {
   }
 });
 
-elements.trend.addEventListener("click", function(e) {
-  // const trend = e.target.closest(".section-trend__content");
-  // if (trend) {
-  //   elements.categories.innerHTML = ''
-  //   elements.sectionTrend.classList.add('not-display')
-  //   getEachMeal(trend.dataset.meal);
-  // }
-});
+// elements.trend.addEventListener("click", function(e) {
+//   const trend = e.target.closest(".button-trend");
+//   if (trend) {
+//     console.log('trend')
+    
+//     setTimeout(() => {
+//       trendingMeal()
+//     }, 0);
+//   }
+// });
 
 elements.sectionCategory.addEventListener("click", function(e) {
   const sub = e.target.closest(".section-categories__content__categories");
@@ -262,20 +268,21 @@ document.querySelector(".top").addEventListener("click", function(e) {
 });
 
 document.querySelector(".more").addEventListener("click", function() {
-  if (state.sub) {
-    showMore(urlSubCategory.arrSubCategories, displayMeals);
-    if (loadList.end > urlSubCategory.arrSubCategories.length) {
-      const divAll = document.querySelector(".more");
-      divAll.style = "display: none";
-    }
-  }
-  if (state.myrecipe) {
-    showMore(arrSaveMeal, displayMyRecipes);
-    if (loadList.end > arrSaveMeal.length) {
-      const divAll = document.querySelector(".more");
-      divAll.style = "display: none";
-    }
-  }
+  showMore(urlSubCategory.arr, displayMeals)
+  // if (state.sub) {
+  //   showMore(urlSubCategory.arrSubCategories, displayMeals);
+  //   if (loadList.end > urlSubCategory.arrSubCategories.length) {
+  //     const divAll = document.querySelector(".more");
+  //     divAll.style = "display: none";
+  //   }
+  // }
+  // if (state.myrecipe) {
+  //   showMore(arrSaveMeal, displayMyRecipes);
+  //   if (loadList.end > arrSaveMeal.length) {
+  //     const divAll = document.querySelector(".more");
+  //     divAll.style = "display: none";
+  //   }
+  // }
 });
 
 const options = {
@@ -299,5 +306,3 @@ const callback = function(entries, observe) {
 };
 const observer = new IntersectionObserver(callback, options);
 observer.observe(document.querySelector(".footer"));
-
-

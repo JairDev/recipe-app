@@ -1,22 +1,19 @@
-import { loading, clearLoad, blobImgCategory, displayDivMore, title } from './base'
+import { loading, clearLoad, getMeal, blob } from './base'
+import { displayMeals} from '../views/categoryview'
 import { elements } from '../views/baseview'
 
-const byCategories = "https://www.themealdb.com/api/json/v1/1/categories.php";
-
 export async function categories() {
-  const arrCategories = []
   try {
-    loading(elements.categories);
-    const response = await fetch(byCategories);
-    const data = await response.json();
-    arrCategories.push(...data.categories);
-    displayDivMore(arrCategories)
-    arrCategories.map(category => {
-      blobImgCategory(category);
-    });
-    clearLoad(elements.categories);
+    loading(elements.categories)
+    const get = "https://www.themealdb.com/api/json/v1/1/categories.php";
+    const search = await getMeal(get)
+    search.categories.map(async (meal) => {
+      const imgBlob = await blob(meal, 'strCategoryThumb')
+      displayMeals(imgBlob, meal)
+    })
+    clearLoad(elements.categories)
   } catch (error) {
-    console.log(error);
+    console.error(error)
   }
 }
 

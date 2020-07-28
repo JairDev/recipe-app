@@ -4,22 +4,22 @@ import { elements } from "../views/baseview";
 
 export const objCurrent = {
   currentPage: 1,
-  numberPerPage: 12
+  numberPerPage: 15
 };
 
 export async function urlSubCategory(url) {
-  urlSubCategory.arrSubCategories = [];
-  objCurrent.currentPage = 1;
+  urlSubCategory.arr = [];
+  // objCurrent.currentPage = 1;
   const getSubcategorie = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${url}`;
   try {
     loading(elements.categories);
     const response = await fetch(getSubcategorie);
     const data = await response.json();
-    urlSubCategory.arrSubCategories.push(...data.meals);
-    loadList(urlSubCategory.arrSubCategories);
-    displayDivMore(loadList.elementsList);
-    loadList.elementsList.map(meal => {
-      blob(url, meal, displayMeals);
+    urlSubCategory.arr.push(...data.meals);
+    const arr = loadList(urlSubCategory.arr)
+    displayDivMore(arr);
+    arr.map(meal => {
+      blob(meal, displayMeals);
     });
     clearLoad(elements.categories);
   } catch (error) {
@@ -28,16 +28,19 @@ export async function urlSubCategory(url) {
 }
 
 export function loadList(arr) {
-  loadList.elementsList = [];
   let start = (objCurrent.currentPage - 1) * objCurrent.numberPerPage;
-  loadList.end = start + objCurrent.numberPerPage;
-  loadList.elementsList = arr.slice(start, loadList.end);
+  console.log(objCurrent.currentPage - 1)
+  let end = start + objCurrent.numberPerPage;
+  let arrSlice = arr.slice(start, end);
+  return arrSlice
 }
 
 export function showMore(arr, display) {
   objCurrent.currentPage += 1;
-  loadList(arr);
-  loadList.elementsList.forEach(meal => {
+  const array = loadList(arr);
+  // console.log(array)
+  array.map(meal => {
     blob(meal, display);
   });
+
 }
