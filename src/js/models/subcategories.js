@@ -1,6 +1,9 @@
-import { displayMeals } from "../views/subcategoriesview";
-import { blob, loading, clearLoad, displayDivMore, title } from "./base";
+import { displayMeals } from "../views/categoryview";
+import { blob, loading, clearLoad, displayDivMore, getMeal } from "./base";
 import { elements } from "../views/baseview";
+
+const urls = location.hash.split('/')
+const [recipe, category] = urls
 
 export const objCurrent = {
   currentPage: 1,
@@ -8,22 +11,24 @@ export const objCurrent = {
 };
 
 export async function urlSubCategory(url) {
-  urlSubCategory.arr = [];
-  // objCurrent.currentPage = 1;
-  const getSubcategorie = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${url}`;
+  const get = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${url}`;
   try {
-    loading(elements.categories);
-    const response = await fetch(getSubcategorie);
-    const data = await response.json();
-    urlSubCategory.arr.push(...data.meals);
-    const arr = loadList(urlSubCategory.arr)
-    displayDivMore(arr);
-    arr.map(meal => {
-      blob(meal, displayMeals);
-    });
+    loading(elements.categories)
+    const search = await getMeal(get)
+    urlSubCategory.arr = search.meals;
+    displayDivMore(search.meals)
+    const arrSlice = loadList(search.meals)
+    arrSlice.map(async (meal) => {
+      const imgBlob = await blob(meal, "strMealThumb")
+      const obj = {
+        img: imgBlob,
+        food: meal,
+      }
+      displayMeals(obj, category, "/")
+    })
     clearLoad(elements.categories);
   } catch (error) {
-    console.log(error);
+    console.error(error)
   }
 }
 
@@ -35,12 +40,16 @@ export function loadList(arr) {
   return arrSlice
 }
 
-export function showMore(arr, display) {
+export async function showMore(arr) {
   objCurrent.currentPage += 1;
   const array = loadList(arr);
-  // console.log(array)
-  array.map(meal => {
-    blob(meal, display);
-  });
-
+  array.map(async (meal) => {
+    const imgBlob = await blob(meal, "strMealThumb")
+    console.log(imgBlob)
+    const obj = {
+      img: imgBlob,
+      food: meal,
+    }
+    displayMeals(obj, category, "/")
+  })
 }

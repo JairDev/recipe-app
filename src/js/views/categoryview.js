@@ -1,14 +1,17 @@
 import { elements } from "./baseview";
 
-export function displayMeals(imgUrl, category) {
+export function displayMeals(obj, category, hash) {
   const html = `
-  <div class="section-categories__content__categories" data-categorie="${category.strCategory}">
-    <a href="#recipes/${category.strCategory}" data="${category.strCategory}" class="link_categories">
-      <img alt="${category.strCategory}" src="${imgUrl}">
-      <span class="text-category">${category.strCategory}</span>
+  <div class="section-categories__content__categories">
+    <a href="#recipes/${obj.food.strCategory || category}${hash || ""}${
+    obj.food.strMeal || ""
+  }" class="link_categories">
+      <img alt="" src="${obj.img}">
+      <span class="text-category">${
+        obj.food.strCategory || obj.food.strMeal
+      }</span>
     </a>
   </div>
     `;
-  elements.categories.insertAdjacentHTML("afterbegin", html);
-  const link = document.querySelector('.link_categories')
+  elements.categories.insertAdjacentHTML("beforeend", html);
 }

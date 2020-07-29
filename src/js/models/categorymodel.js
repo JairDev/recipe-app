@@ -9,7 +9,11 @@ export async function categories() {
     const search = await getMeal(get)
     search.categories.map(async (meal) => {
       const imgBlob = await blob(meal, 'strCategoryThumb')
-      displayMeals(imgBlob, meal)
+      const obj = {
+        img: imgBlob,
+        food: meal,
+      }
+      displayMeals(obj)
     })
     clearLoad(elements.categories)
   } catch (error) {
