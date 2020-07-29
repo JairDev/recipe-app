@@ -12,21 +12,17 @@ import {
   closeModal,
   showModal,
   deleteMeal,
-  displayDivMore,
   title,
-  getMeal
 } from "./js/models/base";
 import { elements } from "./js/views/baseview";
-import { getMealSearch, filterMealSearch, searchMealController } from "./js/models/searchmodel";
+import { searchMealController } from "./js/models/searchmodel";
 import { trendingMeal } from "./js/models/trendingmodel";
 import { categories } from "./js/models/categorymodel";
 import {
   urlSubCategory,
   showMore,
-  objCurrent,
-  loadList
 } from "./js/models/subcategories";
-import { getEachMeal, getMealObj } from "./js/models/eachmeal";
+import { getEachMeal } from "./js/models/eachmeal";
 import { displayMyRecipes } from "./js/views/myrecipeview";
 import { addMyRecipe } from "./js/models/addmyrecipe";
 
@@ -35,14 +31,14 @@ function addMyRecipeController(name, instructions, ingredient) {
 }
 
 function myRecipesController() {
-  arrSaveMeal.map(meal => {
-    blob(meal.strCategory, meal, displayMyRecipes)
+  arrSaveMeal.map(async meal => {
+    const imgBlob = await blob(meal, "strMealThumb")
+    displayMyRecipes(imgBlob, meal)
   })
   if (arrSaveMeal.length === 0) {
     const h2 = `<h2 class ="nothing">Nothing yet ...</h2>`;
     elements.categories.innerHTML = h2;
   }
-  console.log(arrSaveMeal)
 }
 
 function loadFunction(hash, property, callback) {
@@ -67,6 +63,7 @@ function loadFunction(hash, property, callback) {
       elements.sectionTrend.classList.add('not-display')
       elements.title.classList.add('not-display-title')
       getEachMeal(meal);
+      // console.log(`${state}/${category}/${meal}`)
     },
     'myrecipes': function() {
       clear()

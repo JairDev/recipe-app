@@ -20,7 +20,8 @@ export function loading(place) {
 }
 
 export function clearLoad(place) {
-  place.firstElementChild.remove();
+  const load = document.querySelector('.lds-dual-ring')
+  load.remove();
 }
 export function clearSearch() {
   elements.searchResult.innerHTML = "";

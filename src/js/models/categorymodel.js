@@ -15,7 +15,7 @@ export async function categories() {
       }
       displayMeals(obj)
     })
-    clearLoad(elements.categories)
+    clearLoad()
   } catch (error) {
     console.error(error)
   }
