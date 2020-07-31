@@ -63,6 +63,7 @@ function loadFunction(hash, property, callback) {
       elements.sectionTrend.classList.add('not-display')
       elements.title.classList.add('not-display-title')
       getEachMeal(meal);
+      // console.log(`${state}/${category}/${meal}`)
     },
     'myrecipes': function() {
       clear()
