@@ -2,6 +2,7 @@ import { elements } from "../views/baseview";
 import { displayMeals } from "../views/categoryview";
 import { displayEachMeal, mealObj, mealArr } from "../views/eachmealview";
 
+
 export const arrSaveMeal = JSON.parse(localStorage.getItem("meals")) || [];
 export let objAddMeal = {};
 export let subcategorieLog = "";
@@ -20,7 +21,8 @@ export function loading(place) {
 }
 
 export function clearLoad(place) {
-  place.firstElementChild.remove();
+  const load = document.querySelector('.lds-dual-ring')
+  load.remove();
 }
 export function clearSearch() {
   elements.searchResult.innerHTML = "";

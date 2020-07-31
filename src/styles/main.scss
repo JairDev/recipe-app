@@ -256,14 +256,6 @@ main {
     position: relative;
     overflow: hidden;
     @include load;
-    & .button-trend {
-      cursor: pointer;
-      background-color: blue;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 100;
-    }
     & .section-trend__content {
       width: 100%;
       height: 100%;
