@@ -1,11 +1,9 @@
 import { elements } from './baseview'
-import { clear, createButtonBack } from '../models/base'
-import { displayEachMeal } from './eachmealview'
 
 export function displayMyRecipes(imgUrl, meal) {
   const html = `
               <div class="section-categories__content__myrecipes" data-meal="${meal.strMeal}">
-                <a href="#myrecipes/${meal.strCategory}/${meal.strMeal}" class="link_myrecipe">
+                <a href="#myrecipes/${meal.strCategory}/${meal.strMeal}/${meal.idMeal}" class="link_myrecipe">
                   <img src="${imgUrl}">
                   <h2>${meal.strMeal}</h2>
                 </a>

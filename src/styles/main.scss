@@ -67,6 +67,11 @@ body {
           color: map-get($colors, "hovers" );
         }
       }
+      & .add__recipe {
+        cursor: pointer;
+        color: map-get($colors, "base");
+        font-size: map-get($font-size, "link");
+      }
     }
     .icon-home {
       display: inline-block;
@@ -175,6 +180,7 @@ body {
   color: white;
   display: none;
   flex-direction: column;
+  font-size: map-get($font-size, "text");
   width: 70%;
   padding: 0 1rem;
   position: fixed;
@@ -194,6 +200,7 @@ body {
       border: none;
       background-color: rgb(43, 43, 43);
       border-bottom: 1px solid white;
+      font-size: 1.2rem;
       width: 100%;
       height: 30px;
       color: white;
@@ -202,13 +209,20 @@ body {
 
   & .modal-recipe__ingredients {
     margin-top: .5rem;
+    font-size: 1.2rem;
   }
   & textarea {
     background-color: rgb(43, 43, 43);
     color: white;
     width: 100%;
+    font-size: 1.2rem;
     margin-top: .5rem;
     padding: 0.5rem 1rem;
+  }
+  & .modal-recipe__content-input {
+    & input {
+      font-size: 1rem;
+    }
   }
   & .modal-recipe__button-done {
     align-self: flex-end;
@@ -218,6 +232,7 @@ body {
       background-color: rgb(50, 112, 50);
       border: none;
       color: white;
+      font-size: map-get($font-size, "text");
       width: 100%;
       padding: .4rem;
     }
@@ -381,13 +396,6 @@ main {
         }
       }
 
-      & .section-categories__content__meals{
-        @include style($colors);
-        .text-subcategory {
-          font-size: map-get($font-size, "name") ;
-        }
-      }
-
       & .section-categories__content__eachmeal {
         display: flex;
         flex-direction: column;
@@ -433,17 +441,17 @@ main {
             background-color: map-get($colors, "warn");
             letter-spacing: .5px;
             position: absolute;
-            top: -70px;
-            left: -50px;
-            width: 220px;
+            top: -80px;
+            left: 0px;
+            width: 100%;
             padding: 1rem 0;
           }
           & .display_warn:after {
             content: '▼';
             color: map-get($colors, "warn");
             position: absolute;
-            top: -30px;
-            left: -50px;
+            top: -32px;
+            left: -10px;
             width: 220px;
           }
           & .display_success:before {
@@ -451,17 +459,17 @@ main {
             background-color: map-get($colors, "success");;
             letter-spacing: .5px;
             position: absolute;
-            top: -70px;
-            left: -50px;
-            width: 220px;
+            top: -80px;
+            left: 0px;
+            width: 100%;
             padding: 1rem 0;
           }
           & .display_success:after {
             content: '▼';
             color: map-get($colors, "success");;
             position: absolute;
-            top: -30px;
-            left: -50px;
+            top: -32px;
+            left: -10px;
             width: 220px;
           }
         }

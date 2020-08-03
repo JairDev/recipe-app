@@ -8,16 +8,14 @@ import {
   saveMeal,
   blob,
   arrSaveMeal,
-  objAddMeal,
   closeModal,
   showModal,
   deleteMeal,
   title,
+  modelHome
 } from "./js/models/base";
 import { elements } from "./js/views/baseview";
 import { searchMealController } from "./js/models/searchmodel";
-import { trendingMeal } from "./js/models/trendingmodel";
-import { categories } from "./js/models/categorymodel";
 import {
   urlSubCategory,
   showMore,
@@ -27,7 +25,9 @@ import { displayMyRecipes } from "./js/views/myrecipeview";
 import { addMyRecipe } from "./js/models/addmyrecipe";
 
 function addMyRecipeController(name, instructions, ingredient) {
-  addMyRecipe(name, instructions, ingredient);
+  const meal = addMyRecipe(name, instructions, ingredient);
+  arrSaveMeal.push(meal)
+  console.log(meal)
 }
 
 function myRecipesController() {
@@ -42,13 +42,13 @@ function myRecipesController() {
 }
 
 function loadFunction(hash, property, callback) {
-  const {state, category, meal} = property
+  const {state, category, meal, idMeal }  = property
   const urls = {
     'home': function() {
       clear()
       elements.sectionTrend.classList.remove('not-display')
       elements.title.classList.add('not-display-title')
-      categories()
+      modelHome()
     },
     [`${state}/${category}`]: function() {
       clear()
@@ -58,12 +58,12 @@ function loadFunction(hash, property, callback) {
       title(category)
       urlSubCategory(category)
     },
-    [`${state}/${category}/${meal}`]: function() {
+    [`${state}/${category}/${meal}/${idMeal}`]: function() {
       clear()
       elements.sectionTrend.classList.add('not-display')
       elements.title.classList.add('not-display-title')
-      getEachMeal(meal);
-      // console.log(`${state}/${category}/${meal}`)
+      getEachMeal(idMeal);
+      
     },
     'myrecipes': function() {
       clear()
@@ -75,14 +75,16 @@ function loadFunction(hash, property, callback) {
   callback(urls[hash])
 }
 
+
 function getHash() {
   const hash = location.hash.substring(1)
   const url = hash.split('/')
-  const [recipes, category, food] = url
+  const [recipes, category, food, id] = url
   const obj = {
     state: recipes,
     category: category,
-    meal: food
+    meal: food,
+    idMeal: id
   }
   if(!location.hash) {
     location.hash = 'home'
@@ -97,14 +99,10 @@ elements.search.addEventListener("keyup", searchMealController);
 window.addEventListener('hashchange', getHash)
 
 document.addEventListener("DOMContentLoaded", function() {
-  trendingMeal();
   getHash()
 });
 
 elements.formMyRecipe.addEventListener("submit", e => {
-  elements.trend.style = "display: none";
-  const buttonBack = document.getElementById("button_back");
-  if (buttonBack) buttonBack.remove();
   const name = elements.nameMyRecipe.value;
   const ingredient = elements.ingredients.value;
   const instructions = elements.instructions.value;
@@ -113,19 +111,21 @@ elements.formMyRecipe.addEventListener("submit", e => {
   elements.instructions.value = "";
   elements.previewImg.src = "";
   addMyRecipeController(name, instructions, ingredient);
-  closeModal();
-  clear();
-  myRecipesController();
+  // closeModal();
+  // clear();
+  // myRecipesController();
   e.preventDefault();
 });
+
 
 elements.inputImg.addEventListener("change", function() {
   const file = this.files[0];
   if (file) {
     const reader = new FileReader();
     reader.addEventListener("load", function() {
-      elements.previewImg.src = reader.result;
-      objAddMeal.strMealThumb = reader.result;
+      const url = URL.createObjectURL(file)
+      elements.previewImg.src = url
+      elements.previewImg.setAttribute("data-url", url)
     });
     reader.readAsDataURL(file);
   } else {
@@ -168,6 +168,7 @@ elements.sectionCategory.addEventListener("click", function(e) {
   const saveButton = e.target.closest(".save_recipe");
   const deleteButton = e.target.closest(".button_delete");
   if (saveButton) {
+    // console.log(arrSaveMeal)
     saveMeal(arrSaveMeal, saveButton.dataset.id);
   }
   if (deleteButton) {

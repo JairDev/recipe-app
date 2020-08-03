@@ -5,7 +5,7 @@ export function displayMeals(obj, category, hash) {
   <div class="section-categories__content__categories">
     <a href="#recipes/${obj.food.strCategory || category}${hash || ""}${
     obj.food.strMeal || ""
-  }" class="link_categories">
+  }${hash || ""}${obj.food.idMeal || ""}" class="link_categories">
       <img alt="" src="${obj.img}">
       <span class="text-category">${
         obj.food.strCategory || obj.food.strMeal

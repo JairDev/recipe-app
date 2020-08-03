@@ -1,11 +1,35 @@
 import { elements } from "../views/baseview";
-import { displayMeals } from "../views/categoryview";
-import { displayEachMeal, mealObj, mealArr } from "../views/eachmealview";
-
+import { categories } from "./categorymodel";
+import { trendingMeal} from "./trendingmodel";
+import { mealArr } from "../views/eachmealview";
 
 export const arrSaveMeal = JSON.parse(localStorage.getItem("meals")) || [];
 export let objAddMeal = {};
 export let subcategorieLog = "";
+
+export async function parallelFetch() {
+  const endPointCategories = "https://www.themealdb.com/api/json/v1/1/categories.php";
+  const endPointTrend = "https://www.themealdb.com/api/json/v1/1/random.php";
+  const res1 = await fetch(endPointCategories)
+  const res2 = await fetch(endPointTrend)
+  const results =  await Promise.all([res1, res2])
+  const resCategories = await results[0].json()
+  const resTrend = await results[1].json()
+  const resultsObj = {
+    resCategories,
+    resTrend
+  }
+  return resultsObj
+}
+
+export async function modelHome() {
+  loading(elements.categories)
+  loading(elements.sectionTrend)
+  const resultFetch = await parallelFetch()
+  trendingMeal(resultFetch)
+  categories(resultFetch)
+  clearLoad()
+}
 
 export async function getMeal(query) {
   const response = await fetch(query);
@@ -18,11 +42,12 @@ export function loading(place) {
     <div class="lds-dual-ring "></div>
   `;
   place.insertAdjacentHTML("afterbegin", load);
+
 }
 
-export function clearLoad(place) {
+export function clearLoad() {
   const load = document.querySelector('.lds-dual-ring')
-  load.remove();
+  if(load) load.remove();
 }
 export function clearSearch() {
   elements.searchResult.innerHTML = "";
@@ -95,7 +120,7 @@ export function closeModal() {
 
 export function clear() {
   elements.categories.innerHTML = "";
- 
+  elements.sectionTrend.innerHTML = ""
 }
 
 export function displayDivMore(arr) {

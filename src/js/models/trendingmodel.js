@@ -1,13 +1,10 @@
-import { loading, blob, clearLoad, getMeal } from './base'
-import { elements } from '../views/baseview'
+import { blob } from './base'
 import { displayTrend } from '../views/trendingview'
 
-export async function trendingMeal() {
+export async function trendingMeal(res) {
   try {
-    const get = "https://www.themealdb.com/api/json/v1/1/random.php";
-    const search = await getMeal(get)
-    const imgBlob = await blob(...search.meals, 'strMealThumb')
-    displayTrend(imgBlob, ...search.meals)
+    const imgBlob = await blob(...res.resTrend.meals, 'strMealThumb')
+    displayTrend(imgBlob, ...res.resTrend.meals)
   } catch (error) {
     console.error(error)
   }

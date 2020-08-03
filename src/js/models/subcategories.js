@@ -10,10 +10,10 @@ export const objCurrent = {
 export async function urlSubCategory(url) {
   const urls = location.hash.split('/')
   const [recipe, category] = urls
-  const get = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${url}`;
+  const endPoint = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${url}`;
   try {
     loading(elements.categories)
-    const search = await getMeal(get)
+    const search = await getMeal(endPoint)
     urlSubCategory.arr = search.meals;
     displayDivMore(search.meals)
     const arrSlice = loadList(search.meals)
