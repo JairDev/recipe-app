@@ -12,29 +12,26 @@ import {
   showModal,
   deleteMeal,
   title,
-  modelHome
+  modelHome,
 } from "./js/models/base";
 import { elements } from "./js/views/baseview";
 import { searchMealController } from "./js/models/searchmodel";
-import {
-  urlSubCategory,
-  showMore,
-} from "./js/models/subcategories";
+import { urlSubCategory, showMore } from "./js/models/subcategories";
 import { getEachMeal } from "./js/models/eachmeal";
 import { displayMyRecipes } from "./js/views/myrecipeview";
 import { addMyRecipe } from "./js/models/addmyrecipe";
 
 function addMyRecipeController(name, instructions, ingredient) {
   const meal = addMyRecipe(name, instructions, ingredient);
-  arrSaveMeal.push(meal)
-  console.log(meal)
+  arrSaveMeal.push(meal);
+  console.log(meal);
 }
 
 function myRecipesController() {
-  arrSaveMeal.map(async meal => {
-    const imgBlob = await blob(meal, "strMealThumb")
-    displayMyRecipes(imgBlob, meal)
-  })
+  arrSaveMeal.map(async (meal) => {
+    const imgBlob = await blob(meal, "strMealThumb");
+    displayMyRecipes(imgBlob, meal);
+  });
   if (arrSaveMeal.length === 0) {
     const h2 = `<h2 class ="nothing">Nothing yet ...</h2>`;
     elements.categories.innerHTML = h2;
@@ -42,67 +39,65 @@ function myRecipesController() {
 }
 
 function loadFunction(hash, property, callback) {
-  const {state, category, meal, idMeal }  = property
+  const { state, category, meal, idMeal } = property;
   const urls = {
-    'home': function() {
-      clear()
-      elements.sectionTrend.classList.remove('not-display')
-      elements.title.classList.add('not-display-title')
-      modelHome()
+    home: function () {
+      clear();
+      elements.sectionTrend.classList.remove("not-display");
+      elements.title.classList.add("not-display-title");
+      modelHome();
     },
-    [`${state}/${category}`]: function() {
-      clear()
-      elements.sectionTrend.classList.add('not-display')
-      elements.title.classList.remove('not-display-title')
-      elements.title.innerHTML = ''
-      title(category)
-      urlSubCategory(category)
+    [`${state}/${category}`]: function () {
+      clear();
+      elements.sectionTrend.classList.add("not-display");
+      elements.title.classList.remove("not-display-title");
+      elements.title.innerHTML = "";
+      title(category);
+      urlSubCategory(category);
     },
-    [`${state}/${category}/${meal}/${idMeal}`]: function() {
-      clear()
-      elements.sectionTrend.classList.add('not-display')
-      elements.title.classList.add('not-display-title')
+    [`${state}/${category}/${meal}/${idMeal}`]: function () {
+      clear();
+      elements.sectionTrend.classList.add("not-display");
+      elements.title.classList.add("not-display-title");
       getEachMeal(idMeal);
-      
     },
-    'myrecipes': function() {
-      clear()
-      elements.sectionTrend.classList.add('not-display')
-      elements.title.classList.add('not-display-title')
-      myRecipesController()
-    }
-  }
-  callback(urls[hash])
+    myrecipes: function () {
+      clear();
+      elements.sectionTrend.classList.add("not-display");
+      elements.title.classList.add("not-display-title");
+      myRecipesController();
+    },
+  };
+  callback(urls[hash]);
 }
 
-
 function getHash() {
-  const hash = location.hash.substring(1)
-  const url = hash.split('/')
-  const [recipes, category, food, id] = url
+  const hash = location.hash.substring(1);
+  const url = hash.split("/");
+  const [recipes, category, food, id] = url;
   const obj = {
     state: recipes,
     category: category,
     meal: food,
-    idMeal: id
+    idMeal: id,
+  };
+  if (!location.hash) {
+    location.hash = "home";
   }
-  if(!location.hash) {
-    location.hash = 'home'
-  }
-  loadFunction(hash , obj, (property) => property())
-};
+  loadFunction(hash, obj, (property) => property());
+}
 
 //events////////////////////////
 
 elements.search.addEventListener("keyup", searchMealController);
 
-window.addEventListener('hashchange', getHash)
+window.addEventListener("hashchange", getHash);
 
-document.addEventListener("DOMContentLoaded", function() {
-  getHash()
+document.addEventListener("DOMContentLoaded", function () {
+  getHash();
 });
 
-elements.formMyRecipe.addEventListener("submit", e => {
+elements.formMyRecipe.addEventListener("submit", (e) => {
   const name = elements.nameMyRecipe.value;
   const ingredient = elements.ingredients.value;
   const instructions = elements.instructions.value;
@@ -111,21 +106,17 @@ elements.formMyRecipe.addEventListener("submit", e => {
   elements.instructions.value = "";
   elements.previewImg.src = "";
   addMyRecipeController(name, instructions, ingredient);
-  // closeModal();
-  // clear();
-  // myRecipesController();
   e.preventDefault();
 });
 
-
-elements.inputImg.addEventListener("change", function() {
+elements.inputImg.addEventListener("change", function () {
   const file = this.files[0];
   if (file) {
     const reader = new FileReader();
-    reader.addEventListener("load", function() {
-      const url = URL.createObjectURL(file)
-      elements.previewImg.src = url
-      elements.previewImg.setAttribute("data-url", url)
+    reader.addEventListener("load", function () {
+      const url = URL.createObjectURL(file);
+      elements.previewImg.src = url;
+      elements.previewImg.setAttribute("data-url", url);
     });
     reader.readAsDataURL(file);
   } else {
@@ -133,7 +124,7 @@ elements.inputImg.addEventListener("change", function() {
   }
 });
 
-document.addEventListener("click", function(e) {
+document.addEventListener("click", function (e) {
   if (e.target.matches(".add__recipe")) {
     showModal();
   } else if (e.target.matches(".modal-recipe__close")) {
@@ -150,7 +141,7 @@ elements.iconClose.addEventListener("click", () => {
   elements.searchContent.style = "display: none";
 });
 
-elements.searchContent.addEventListener("click", e => {
+elements.searchContent.addEventListener("click", (e) => {
   const search = e.target.closest(".thumb_meal");
   if (search) {
     elements.searchContent.style = "display: none";
@@ -164,28 +155,27 @@ elements.searchContent.addEventListener("click", e => {
   }
 });
 
-elements.sectionCategory.addEventListener("click", function(e) {
-  const saveButton = e.target.closest(".save_recipe");
-  const deleteButton = e.target.closest(".button_delete");
+elements.sectionCategory.addEventListener("click", function (e) {
+  const saveButton = e.target.closest("#savebut");
+  const deleteButton = e.target.closest("#deletebut");
   if (saveButton) {
-    // console.log(arrSaveMeal)
     saveMeal(arrSaveMeal, saveButton.dataset.id);
   }
   if (deleteButton) {
-    deleteMeal(arrSaveMeal, deleteButton.dataset.idfood);
+    deleteMeal(arrSaveMeal, deleteButton.dataset.id);
   }
 });
 
 const JD = {};
 
-JD.debounce = function(func, wait, immediate) {
+JD.debounce = function (func, wait, immediate) {
   var timeout;
 
-  return function() {
+  return function () {
     var context = this,
       args = arguments;
 
-    var later = function() {
+    var later = function () {
       timeout = null;
 
       if (!immediate) {
@@ -232,23 +222,23 @@ function scroll() {
 
 document.addEventListener("scroll", JD.debounce(scroll, 15, true));
 
-document.querySelector(".top").addEventListener("click", function(e) {
+document.querySelector(".top").addEventListener("click", function (e) {
   document.documentElement.style = "scroll-behavior: smooth;";
   document.documentElement.scrollTop = 0;
 });
 
-document.querySelector(".more").addEventListener("click", function() {
-  showMore(urlSubCategory.arr)
+document.querySelector(".more").addEventListener("click", function () {
+  showMore(urlSubCategory.arr);
 });
 
 const options = {
   root: null,
   rootMarin: 0,
-  threshold: 0.4
+  threshold: 0.4,
 };
-const callback = function(entries, observe) {
+const callback = function (entries, observe) {
   const iconTopSvg = document.querySelector(".icon-top");
-  entries.forEach(entrie => {
+  entries.forEach((entrie) => {
     if (entrie.isIntersecting) {
       iconTopSvg.style = `
       stroke: black;

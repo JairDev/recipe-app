@@ -1,6 +1,6 @@
 import { elements } from "../views/baseview";
 import { categories } from "./categorymodel";
-import { trendingMeal} from "./trendingmodel";
+import { trendingMeal } from "./trendingmodel";
 import { mealArr } from "../views/eachmealview";
 
 export const arrSaveMeal = JSON.parse(localStorage.getItem("meals")) || [];
@@ -8,33 +8,34 @@ export let objAddMeal = {};
 export let subcategorieLog = "";
 
 export async function parallelFetch() {
-  const endPointCategories = "https://www.themealdb.com/api/json/v1/1/categories.php";
+  const endPointCategories =
+    "https://www.themealdb.com/api/json/v1/1/categories.php";
   const endPointTrend = "https://www.themealdb.com/api/json/v1/1/random.php";
-  const res1 = await fetch(endPointCategories)
-  const res2 = await fetch(endPointTrend)
-  const results =  await Promise.all([res1, res2])
-  const resCategories = await results[0].json()
-  const resTrend = await results[1].json()
+  const res1 = await fetch(endPointCategories);
+  const res2 = await fetch(endPointTrend);
+  const results = await Promise.all([res1, res2]);
+  const resCategories = await results[0].json();
+  const resTrend = await results[1].json();
   const resultsObj = {
     resCategories,
-    resTrend
-  }
-  return resultsObj
+    resTrend,
+  };
+  return resultsObj;
 }
 
 export async function modelHome() {
-  loading(elements.categories)
-  loading(elements.sectionTrend)
-  const resultFetch = await parallelFetch()
-  trendingMeal(resultFetch)
-  categories(resultFetch)
-  clearLoad()
+  loading(elements.categories);
+  loading(elements.sectionTrend);
+  const resultFetch = await parallelFetch();
+  trendingMeal(resultFetch);
+  categories(resultFetch);
+  clearLoad();
 }
 
 export async function getMeal(query) {
   const response = await fetch(query);
   const data = await response.json();
-  return data
+  return data;
 }
 
 export function loading(place) {
@@ -42,21 +43,20 @@ export function loading(place) {
     <div class="lds-dual-ring "></div>
   `;
   place.insertAdjacentHTML("afterbegin", load);
-
 }
 
 export function clearLoad() {
-  const load = document.querySelector('.lds-dual-ring')
-  if(load) load.remove();
+  const load = document.querySelector(".lds-dual-ring");
+  if (load) load.remove();
 }
 export function clearSearch() {
   elements.searchResult.innerHTML = "";
 }
 
 export function title(insert) {
-  const div =  document.querySelector('.section-categories-title')
-  const title = `<span class="title">${insert}</span>`
-  div.innerHTML = title
+  const div = document.querySelector(".section-categories-title");
+  const title = `<span class="title">${insert}</span>`;
+  div.innerHTML = title;
 }
 
 export async function blob(meal, thumb) {
@@ -64,7 +64,7 @@ export async function blob(meal, thumb) {
   const response = await fetch(url);
   const data = await response.blob();
   const objUrl = URL.createObjectURL(data);
-  return objUrl
+  return objUrl;
 }
 
 export function saveLocal(item) {
@@ -72,8 +72,8 @@ export function saveLocal(item) {
 }
 
 export function saveMeal(arr, id) {
-  const idx = arr.findIndex(index => index.idMeal === id);
-  const findMeal = mealArr.find(meal => meal.idMeal === id)
+  const idx = arr.findIndex((index) => index.idMeal === id);
+  const findMeal = mealArr.find((meal) => meal.idMeal === id);
   if (idx === -1) {
     arr.push(findMeal);
     saveLocal(arr);
@@ -93,16 +93,14 @@ export function saveMeal(arr, id) {
 }
 
 export function deleteMeal(arr, id) {
-  const idx = arr.findIndex(index => index.idMeal === id);
+  const idx = arr.findIndex((index) => index.idMeal === id);
   if (idx > -1) {
     arr.splice(idx, 1);
   }
-  document
-    .querySelector(".button_delete")
-    .classList.add("display_success_removed");
+  document.querySelector("#deletebut").classList.add("display_success_removed");
   setTimeout(() => {
     document
-      .querySelector(".button_delete")
+      .querySelector("#deletebut")
       .classList.remove("display_success_removed");
   }, 500);
   saveLocal(arr);
@@ -120,14 +118,14 @@ export function closeModal() {
 
 export function clear() {
   elements.categories.innerHTML = "";
-  elements.sectionTrend.innerHTML = ""
+  elements.sectionTrend.innerHTML = "";
 }
 
 export function displayDivMore(arr) {
   const divMore = document.querySelector(".more");
   if (arr.length >= 15) {
-    divMore.classList.add("flex")
+    divMore.classList.add("flex");
   } else {
-    divMore.classList.remove("flex")
+    divMore.classList.remove("flex");
   }
 }

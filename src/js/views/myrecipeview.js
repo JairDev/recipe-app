@@ -1,4 +1,4 @@
-import { elements } from './baseview'
+import { elements } from "./baseview";
 
 export function displayMyRecipes(imgUrl, meal) {
   const html = `
