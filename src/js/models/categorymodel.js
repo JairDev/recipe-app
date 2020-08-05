@@ -1,4 +1,4 @@
-import { clearLoad, blob } from "./base";
+import { clearLoad, blob, displayDivMore } from "./base";
 import { displayMeals } from "../views/categoryview";
 
 export async function categories(res) {
@@ -11,6 +11,7 @@ export async function categories(res) {
       };
       displayMeals(obj);
     });
+    displayDivMore(res.resCategories.categories);
     clearLoad();
   } catch (error) {
     console.error(error);

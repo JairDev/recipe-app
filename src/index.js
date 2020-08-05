@@ -13,6 +13,7 @@ import {
   deleteMeal,
   title,
   modelHome,
+  saveLocal,
 } from "./js/models/base";
 import { elements } from "./js/views/baseview";
 import { searchMealController } from "./js/models/searchmodel";
@@ -24,7 +25,7 @@ import { addMyRecipe } from "./js/models/addmyrecipe";
 function addMyRecipeController(name, instructions, ingredient) {
   const meal = addMyRecipe(name, instructions, ingredient);
   arrSaveMeal.push(meal);
-  console.log(meal);
+  saveLocal(arrSaveMeal)
 }
 
 function myRecipesController() {

@@ -67,15 +67,34 @@
     <form class="modal-recipe__form" action="">
       <span class="modal-recipe__close">X</span>
       <div class="modal-recipe__name__recipe">
-        <p>Name</p> 
+        <span>Name</span> 
         <input class="modal-recipe__input__name" type="text" placeholder="recipe name">
       </div> 
+      <div class="modal-recipe__category__recipe">
+        <span>Category</span> 
+        <select class="select-categories" name="select">
+          <option value="Beff">Beef</option> 
+          <option value="Miscellaneous" selected>Miscellaneous</option>
+          <option value="Chicken">Chicken</option>
+          <option value="Pasta">Pasta</option>
+          <option value="Dessert">Dessert</option>
+          <option value="Lamb">Lamb</option>
+          <option value="Side">Side</option>
+          <option value="Pork">Pork</option>
+          <option value="Seafood">Seafood</option>
+          <option value="Starter">Starter</option>
+          <option value="Vegan">Vegan</option>
+          <option value="Vegetarian">Vegetarian</option>
+          <option value="Breakfast">Breakfast</option>
+          <option value="Goat">Goat</option>
+        </select>
+      </div> 
       <div class="modal-recipe__ingredients"> 
-        <p>Ingredients</p>
+        <span>Ingredients</span>
         <textarea placeholder="Separate the ingredients by comma..." class="modal-recipe__text__ingredients" name="" id="1" cols="20" rows="5"></textarea>
       </div> 
       <div class="modal-recipe__instructions"> 
-        <p>Instructions</p>
+        <span>Instructions</span>
         <textarea placeholder="Intructions..." class="modal-recipe__text__intructions" name="" id="2" cols="20" rows="5"></textarea>
       </div> 
       <div class="modal-recipe__content-input">

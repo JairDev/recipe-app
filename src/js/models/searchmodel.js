@@ -31,7 +31,14 @@ export async function searchMealController(e) {
       });
     }
   } catch (error) {
-    console.error(error);
+    if (error instanceof TypeError) {
+      const err = document.querySelector(".menu__search__result");
+      const divError = `<span class="error_match">Sorry, food not found...</span> `;
+      err.innerHTML = divError;
+      console.log(error);
+    } else {
+      console.error(error);
+    }
   }
   e.preventDefault();
 }

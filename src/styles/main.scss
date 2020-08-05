@@ -191,6 +191,9 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
+  input, textarea {
+    font-size: 1rem;
+  }
   & .modal-recipe__form {
     display: flex;
     flex-direction: column;
@@ -203,22 +206,29 @@ body {
       border: none;
       background-color: rgb(43, 43, 43);
       border-bottom: 1px solid white;
-      font-size: 1.2rem;
       width: 100%;
       height: 30px;
       color: white;
     }
   }
+  & .modal-recipe__category__recipe {
+    margin: 1rem 0;
+    & .select-categories {
+      border: 0;
+      padding: .4rem .5rem;
+      font-size: 1rem;
+      letter-spacing: .1rem;
+      margin-left: .5rem;
+    }
+  }
 
   & .modal-recipe__ingredients {
     margin-top: 0.5rem;
-    font-size: 1.2rem;
   }
   & textarea {
     background-color: rgb(43, 43, 43);
     color: white;
     width: 100%;
-    font-size: 1.2rem;
     margin-top: 0.5rem;
     padding: 0.5rem 1rem;
   }
