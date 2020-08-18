@@ -11,24 +11,19 @@ export async function parallelFetch() {
   const endPointCategories =
     "https://www.themealdb.com/api/json/v1/1/categories.php";
   const endPointTrend = "https://www.themealdb.com/api/json/v1/1/random.php";
-  const res1 = await fetch(endPointCategories);
-  const res2 = await fetch(endPointTrend);
-  const results = await Promise.all([res1, res2]);
-  const resCategories = await results[0].json();
-  const resTrend = await results[1].json();
-  const resultsObj = {
-    resCategories,
-    resTrend,
-  };
-  return resultsObj;
+  const requestTrend = fetch(endPointTrend);
+  const requestCategory = fetch(endPointCategories);
+  const [trend, category] = await Promise.all([requestTrend, requestCategory])
+  return { trend, category }
 }
 
 export async function modelHome() {
   loading(elements.categories);
   loading(elements.sectionTrend);
-  const resultFetch = await parallelFetch();
-  trendingMeal(resultFetch);
-  categories(resultFetch);
+  const { trend, category } = await parallelFetch();
+  const [ resTrend, resCategory ] = await Promise.all([trend.json(), category.json()])
+  trendingMeal(resTrend);
+  categories(resCategory);
   clearLoad();
 }
 
