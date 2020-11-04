@@ -1,4 +1,4 @@
-import { arrSaveMeal, objAddMeal, saveLocal } from "./base";
+import { objAddMeal } from "./base";
 
 export function addMyRecipe(name, instructions, ingredients) {
   const img = document.querySelector(".modal-recipe__preview-img");
@@ -6,7 +6,7 @@ export function addMyRecipe(name, instructions, ingredients) {
   const strCategory = selectCategories.value;
   const strMealThumb = img.dataset.url;
   let count = 1;
-  let key = "strIngredient";
+  let keyIngredient = "strIngredient";
   const arr = ingredients.split(",");
   const ramId = Math.floor(Math.random() * 1000);
   const objMeal = Object.assign(Object.create(objAddMeal), {
@@ -17,8 +17,7 @@ export function addMyRecipe(name, instructions, ingredients) {
     strCategory: strCategory,
   });
   arr.forEach((ingredient) => {
-    objMeal[key + count++] = ingredient;
+    objMeal[keyIngredient + count++] = ingredient;
   });
-  console.log(objMeal);
   return objMeal;
 }
