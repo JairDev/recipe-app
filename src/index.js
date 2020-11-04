@@ -115,9 +115,11 @@ elements.inputImg.addEventListener("change", function () {
   if (file) {
     const reader = new FileReader();
     reader.addEventListener("load", function () {
-      const url = URL.createObjectURL(file);
-      elements.previewImg.src = url;
-      elements.previewImg.setAttribute("data-url", url);
+      // const url = URL.createObjectURL(file);
+      // elements.previewImg.src = url;
+      elements.previewImg.src = file.name;
+      // elements.previewImg.setAttribute("data-url", url);
+      console.log(file)
     });
     reader.readAsDataURL(file);
   } else {
